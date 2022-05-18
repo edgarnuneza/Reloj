@@ -3,7 +3,7 @@ from sqlalchemy import Column, String, Integer, DateTime
 from sqlalchemy.ext.declarative import declarative_base  
 from sqlalchemy.orm import sessionmaker
 
-db_string = "postgresql://postgres:tecnologiA78#@localhost:5432/reloj"
+db_string = "postgresql://postgres:123@localhost:5432/reloj"
 
 db = create_engine(db_string)  
 base = declarative_base()

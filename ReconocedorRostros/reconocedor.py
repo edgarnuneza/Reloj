@@ -17,7 +17,7 @@ class Reconocedor:
         self.detector = detector
         self.fps = FPS().start()
 
-    def reconocer(self, image):
+    def reconocer(self, image, result):
         image = imutils.resize(image, width=500)
 
         # convert the input image from (1) BGR to grayscale (for face
@@ -84,8 +84,8 @@ class Reconocedor:
         # key = cv2.waitKey(1) & 0xFF
 
 
-        if not name == 'None':
-            print(name)
+        if not name == 'None' and not name == None:
+            result.append(name)
         # update the FPS counter
         self.fps.update()
 

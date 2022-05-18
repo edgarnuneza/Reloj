@@ -1,7 +1,8 @@
+from functools import total_ordering
 import pickle
 from types import coroutine
 import cv2
-from reconocedor import Reconocedor
+from ReconocedorRostros.reconocedor import Reconocedor
 from imutils.video import VideoStream
 import threading
 
@@ -21,7 +22,10 @@ def grabar():
         print("Cannot open camera")
         exit()
 
+    totalFotos = 15
     count = 0
+    results = []
+    
     while True:
         
         ret, frame = cap.read()
@@ -29,14 +33,12 @@ def grabar():
             print("Can't receive frame (stream end?). Exiting ...")
             break
 
-        if count <= 15:
+        if count <= totalFotos:
             if r.identificarRostro(frame):
-                x = threading.Thread(target=r.reconocer(frame))
+                x = threading.Thread(target=r.reconocer(frame, results, count))
                 rostros.append(frame)
-                print(x.start())
-                #r.reconocer(frame)
+                x.start()
                 count = count + 1
-                print(count)
 
         cv2.imshow('frame', frame)
 
@@ -46,11 +48,8 @@ def grabar():
     cap.release()
     cv2.destroyAllWindows()
 
-    # for rostro in rostros:
-    #     print(r.reconocer(rostro))
-    #image = vs.read()q
-
-    #print(r.identificarRostro(image))
+    for i, result in enumerate(results):
+        print(f"{i} {result}")
 
 
 if __name__ == '__main__':
