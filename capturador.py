@@ -7,7 +7,7 @@ class Capturador:
 		self.identificador = identificador
 		self.dataPath = "./Data"
 		self.completePath = self.dataPath + "/" + identificador
-
+ 
 	def crearCarpeta(self):
 		if not os.path.exists(self.completePath):
 			os.makedirs(self.completePath)
