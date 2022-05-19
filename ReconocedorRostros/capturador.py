@@ -15,7 +15,7 @@ class Capturador:
 		
 
 	def capturar(self):
-		cap = cv2.VideoCapture(0)
+		cap = cv2.VideoCapture(2)
 		
 		faceClassif = cv2.CascadeClassifier(cv2.data.haarcascades+'haarcascade_frontalface_default.xml')
 		count = 0
@@ -30,11 +30,14 @@ class Capturador:
 
 			faces = faceClassif.detectMultiScale(gray,1.3,5)
 
-			for (x,y,w,h) in faces:
-				cv2.rectangle(frame, (x,y),(x+w,y+h),(0,255,0),2)
-				rostro = auxFrame[y:y+h,x:x+w]
-				rostro = cv2.resize(rostro,(150,150),interpolation=cv2.INTER_CUBIC)
-				cv2.imwrite(personPath + '/rotro_{}.jpg'.format(count),rostro)
+			for (top,right,bottom,left) in faces:
+				cv2.rectangle(frame, (top,right),(top+bottom,right+left),(0,255,0),2)
+				
+				y = top - 15 if top - 15 > 15 else top + 15
+				cv2.putText(frame, 'identificando', (left, y), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 255, 0), 2)
+				#rostro = auxFrame[y:y+h,x:x+w]
+				#rostro = cv2.resize(rostro,(150,150),interpolation=cv2.INTER_CUBIC)
+				#cv2.imwrite(personPath + '/rotro_{}.jpg'.format(count),rostro)
 				count = count + 1
 			cv2.imshow('frame',frame)
 
@@ -44,3 +47,6 @@ class Capturador:
 
 		cap.release()
 		cv2.destroyAllWindows()
+
+c = Capturador('edgar')
+c.capturar()

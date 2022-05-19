@@ -34,11 +34,19 @@ def grabar():
             break
 
         if count <= totalFotos:
-            if r.identificarRostro(frame):
-                x = threading.Thread(target=r.reconocer(frame, results, count))
-                rostros.append(frame)
+            isFace, boxes = r.identificarRostro(frame)
+            if isFace:
+                x = threading.Thread(target=r.reconocer(frame, results))
                 x.start()
                 count = count + 1
+
+                for (top, right, bottom, left) in boxes:
+                    # draw the predicted face name on the image
+                    cv2.rectangle(frame, (left, top), (right, bottom),
+                        (0, 255, 0), 2)
+                    y = top - 15 if top - 15 > 15 else top + 15
+                    cv2.putText(frame, 'identificando', (left, y), cv2.FONT_HERSHEY_SIMPLEX,
+                        0.75, (0, 255, 0), 2)
 
         cv2.imshow('frame', frame)
 
@@ -48,8 +56,13 @@ def grabar():
     cap.release()
     cv2.destroyAllWindows()
 
-    for i, result in enumerate(results):
-        print(f"{i} {result}")
+    identificarRostro(results)
+    # for i, result in enumerate(results):
+    #     print(f"{i} {result}")
+
+def identificarRostro(results):
+    cv2.imshow('frame', results[0][1])
+    cv2.waitKey(0)
 
 
 if __name__ == '__main__':
