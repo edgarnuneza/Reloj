@@ -108,6 +108,3 @@ class Reconocedor:
                         0.75, (0, 255, 0), 2)
 
             return True, image
-
-    def colocarNombreFoto(self, image, name):
-        pass

@@ -1,7 +1,6 @@
 from email.mime import image
 from functools import total_ordering
 import pickle
-import re
 from types import coroutine
 import cv2
 from ReconocedorRostros.reconocedor import Reconocedor
@@ -9,7 +8,6 @@ from imutils.video import VideoStream
 import threading
 import copy
 from collections import Counter
-
 
 __name__ = "__main__"
 
@@ -19,9 +17,7 @@ def grabar():
 
     r = Reconocedor(data, detector)
     cap = cv2.VideoCapture(2)
-    vs = VideoStream(2)
-    rostros = []
-
+    
     if not cap.isOpened():
         print("Cannot open camera")
         exit()
@@ -79,9 +75,8 @@ def identificarRostro(results):
 
     cv2.imshow('frame', imagenMostrar)
     cv2.waitKey(0)
+    grabar()
 
 if __name__ == '__main__':
-    #r = [['hola', 1], ['mundo', 2], ['hola', 3]]
-    #identificarRostro(r)
     grabar()
 

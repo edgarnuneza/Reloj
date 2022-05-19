@@ -11,34 +11,42 @@ base = declarative_base()
 class Empleado(base):  
     __tablename__ = 'empleado'
 
-    id = Column(Integer, primary_key=True)
+    id = Column(String, primary_key=True)
     nombre = Column(String, nullable=False)
-    apellidoPaterno = Column(String, nullable=False)
-    apellidoMaterno = Column(String, nullable=False)
+    apellido_paterno = Column(String, nullable=False)
+    apellido_materno = Column(String, nullable=False)
     matricula = Column(String, nullable=False, index=True, unique=True)
     puesto = Column(String, nullable=False)
-
+    creado = Column(DateTime, nullable=False)
+    actualizado = Column(DateTime, nullable=True)
+    
 class Perfil(base):
     __tablename__ = 'perfil'
 
     id = Column(Integer, primary_key=True)
     nombre = Column(String, nullable=False)
     descripcion = Column(String)
+    creado = Column(DateTime, nullable=False)
+    actualizado = Column(DateTime, nullable=True)
 
 class Movimiento(base):
     __tablename__ = 'movimiento'
 
     id = Column(Integer, primary_key=True)
-    id_empleado = Column(Integer, ForeignKey('empleado.id'))
+    id_empleado = Column(String, ForeignKey('empleado.id'))
     tipo_movimiento = Column(String, nullable=False)
     tiempo = Column(DateTime, nullable=False)
+    creado = Column(DateTime, nullable=False)
+    actualizado = Column(DateTime, nullable=True)
 
 class Usuario(base):
     __tablename__ = 'usuario'
 
-    id = Column(Integer, primary_key=True)
+    id = Column(String, primary_key=True)
     user_name = Column(String, nullable=False)
     password = Column(String, nullable=False)
+    creado = Column(DateTime, nullable=False)
+    actualizado = Column(DateTime, nullable=True)
 
 class Permisos(base):
     __tablename__ = 'permisos'
@@ -46,6 +54,8 @@ class Permisos(base):
     id = Column(Integer, primary_key=True)
     id_perfil = Column(Integer, ForeignKey('perfil.id'))
     permiso = Column(String, nullable=False)
+    creado = Column(DateTime, nullable=False)
+    actualizado = Column(DateTime, nullable=True)
 
 class Config(base):
     __tablename__ = 'config'
@@ -53,13 +63,17 @@ class Config(base):
     id = Column(Integer, primary_key=True)
     nombre =  Column(String, nullable=False)
     valor =  Column(String, nullable=False)
+    creado = Column(DateTime, nullable=False)
+    actualizado = Column(DateTime, nullable=True)
 
-class Fotografias(base):
-    __tablename__ = 'fotografias'
+class FotografiaPerfil(base):
+    __tablename__ = 'fotografia_perfil'
 
     id = Column(Integer, primary_key=True)
-    id_empleado = Column(Integer, ForeignKey('empleado.id'))
+    id_empleado = Column(String, ForeignKey('empleado.id'))
     ruta = Column(String, nullable=False)
+    creado = Column(DateTime, nullable=False)
+    actualizado = Column(DateTime, nullable=True)
 
 Session = sessionmaker(db)  
 session = Session()
