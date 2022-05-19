@@ -1,10 +1,14 @@
+from email.mime import image
 from functools import total_ordering
 import pickle
+import re
 from types import coroutine
 import cv2
 from ReconocedorRostros.reconocedor import Reconocedor
 from imutils.video import VideoStream
 import threading
+import copy
+from collections import Counter
 
 
 __name__ = "__main__"
@@ -34,19 +38,13 @@ def grabar():
             break
 
         if count <= totalFotos:
-            isFace, boxes = r.identificarRostro(frame)
+            isFace, img = r.identificarRostro(copy.copy(frame))
             if isFace:
+                
                 x = threading.Thread(target=r.reconocer(frame, results))
                 x.start()
+                frame = img
                 count = count + 1
-
-                for (top, right, bottom, left) in boxes:
-                    # draw the predicted face name on the image
-                    cv2.rectangle(frame, (left, top), (right, bottom),
-                        (0, 255, 0), 2)
-                    y = top - 15 if top - 15 > 15 else top + 15
-                    cv2.putText(frame, 'identificando', (left, y), cv2.FONT_HERSHEY_SIMPLEX,
-                        0.75, (0, 255, 0), 2)
 
         cv2.imshow('frame', frame)
 
@@ -57,14 +55,33 @@ def grabar():
     cv2.destroyAllWindows()
 
     identificarRostro(results)
-    # for i, result in enumerate(results):
-    #     print(f"{i} {result}")
 
 def identificarRostro(results):
-    cv2.imshow('frame', results[0][1])
+    
+    contadorRostros = {}
+    
+    for i in range(0, len(results)):
+
+        if not results[i][0] in contadorRostros:
+            contadorRostros[results[i][0]] = 1
+        else:
+            contadorRostros[results[i][0]] = contadorRostros.get(results[i][0]) + 1
+
+    rostroFinal = max(contadorRostros, key=contadorRostros.get)
+    print(rostroFinal)
+    
+    imagenMostrar = None
+
+    for resultado in reversed(results):
+        if resultado[0] == rostroFinal:
+            imagenMostrar = resultado[1]
+            break
+
+    cv2.imshow('frame', imagenMostrar)
     cv2.waitKey(0)
 
-
 if __name__ == '__main__':
+    #r = [['hola', 1], ['mundo', 2], ['hola', 3]]
+    #identificarRostro(r)
     grabar()
 

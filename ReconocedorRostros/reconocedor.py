@@ -89,17 +89,25 @@ class Reconocedor:
         # update the FPS counter
         self.fps.update()
 
-    def identificarRostro(self, image):
+    def identificarRostro(self, image, name='identificando'):
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         rects = self.detector.detectMultiScale(gray, scaleFactor=1.1, 
             minNeighbors=5, minSize=(30, 30),
             flags=cv2.CASCADE_SCALE_IMAGE)
         boxes = [(y, x + w, y + h, x) for (x, y, w, h) in rects]
+        
         if len(rects) == 0:
             return False, None
 
         else: 
-            return True, boxes
+            for (top, right, bottom, left) in boxes:
+                    cv2.rectangle(image, (left, top), (right, bottom),
+                        (0, 255, 0), 2)
+                    y = top - 15 if top - 15 > 15 else top + 15
+                    cv2.putText(image, name, (left, y), cv2.FONT_HERSHEY_SIMPLEX,
+                        0.75, (0, 255, 0), 2)
+
+            return True, image
 
     def colocarNombreFoto(self, image, name):
         pass
