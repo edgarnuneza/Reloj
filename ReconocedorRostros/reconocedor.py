@@ -82,10 +82,10 @@ class Reconocedor:
         # display the image to our screen
         # cv2.imshow("image", image)
         # key = cv2.waitKey(1) & 0xFF
+        
 
-
-        if not name == 'None' and not name == None:
-            result.append(name)
+        if not name == 'None' and not name == None and not name == '':
+            result.append([name, image])
         # update the FPS counter
         self.fps.update()
 
@@ -94,11 +94,12 @@ class Reconocedor:
         rects = self.detector.detectMultiScale(gray, scaleFactor=1.1, 
             minNeighbors=5, minSize=(30, 30),
             flags=cv2.CASCADE_SCALE_IMAGE)
-
+        boxes = [(y, x + w, y + h, x) for (x, y, w, h) in rects]
         if len(rects) == 0:
-            return False
+            return False, None
 
         else: 
-            return True
+            return True, boxes
 
-    
+    def colocarNombreFoto(self, image, name):
+        pass
