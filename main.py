@@ -77,6 +77,10 @@ def identificarRostro(results):
     cv2.waitKey(0)
     grabar()
 
+
+from Controllers.userController import x
+
 if __name__ == '__main__':
     grabar()
+
 

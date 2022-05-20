@@ -1,5 +1,5 @@
-from sqlalchemy import ForeignKey, PrimaryKeyConstraint, create_engine, null  
-from sqlalchemy import Column, String, Integer, DateTime
+from sqlalchemy import TIMESTAMP, ForeignKey, PrimaryKeyConstraint, create_engine, null  
+from sqlalchemy import Column, String, Integer, TIMESTAMP
 from sqlalchemy.ext.declarative import declarative_base  
 from sqlalchemy.orm import sessionmaker
 
@@ -17,8 +17,8 @@ class Empleado(base):
     apellido_materno = Column(String, nullable=False)
     matricula = Column(String, nullable=False, index=True, unique=True)
     puesto = Column(String, nullable=False)
-    creado = Column(DateTime, nullable=False)
-    actualizado = Column(DateTime, nullable=True)
+    creado = Column(TIMESTAMP, nullable=False)
+    actualizado = Column(TIMESTAMP, nullable=True)
     
 class Perfil(base):
     __tablename__ = 'perfil'
@@ -26,8 +26,8 @@ class Perfil(base):
     id = Column(Integer, primary_key=True)
     nombre = Column(String, nullable=False)
     descripcion = Column(String)
-    creado = Column(DateTime, nullable=False)
-    actualizado = Column(DateTime, nullable=True)
+    creado = Column(TIMESTAMP, nullable=False)
+    actualizado = Column(TIMESTAMP, nullable=True)
 
 class Movimiento(base):
     __tablename__ = 'movimiento'
@@ -35,9 +35,9 @@ class Movimiento(base):
     id = Column(Integer, primary_key=True)
     id_empleado = Column(String, ForeignKey('empleado.id'))
     tipo_movimiento = Column(String, nullable=False)
-    tiempo = Column(DateTime, nullable=False)
-    creado = Column(DateTime, nullable=False)
-    actualizado = Column(DateTime, nullable=True)
+    tiempo = Column(TIMESTAMP, nullable=False)
+    creado = Column(TIMESTAMP, nullable=False)
+    actualizado = Column(TIMESTAMP, nullable=True)
 
 class Usuario(base):
     __tablename__ = 'usuario'
@@ -45,8 +45,8 @@ class Usuario(base):
     id = Column(String, primary_key=True)
     user_name = Column(String, nullable=False)
     password = Column(String, nullable=False)
-    creado = Column(DateTime, nullable=False)
-    actualizado = Column(DateTime, nullable=True)
+    creado = Column(TIMESTAMP, nullable=False)
+    actualizado = Column(TIMESTAMP, nullable=True)
 
 class Permisos(base):
     __tablename__ = 'permisos'
@@ -54,8 +54,8 @@ class Permisos(base):
     id = Column(Integer, primary_key=True)
     id_perfil = Column(Integer, ForeignKey('perfil.id'))
     permiso = Column(String, nullable=False)
-    creado = Column(DateTime, nullable=False)
-    actualizado = Column(DateTime, nullable=True)
+    creado = Column(TIMESTAMP, nullable=False)
+    actualizado = Column(TIMESTAMP, nullable=True)
 
 class Config(base):
     __tablename__ = 'config'
@@ -63,8 +63,8 @@ class Config(base):
     id = Column(Integer, primary_key=True)
     nombre =  Column(String, nullable=False)
     valor =  Column(String, nullable=False)
-    creado = Column(DateTime, nullable=False)
-    actualizado = Column(DateTime, nullable=True)
+    creado = Column(TIMESTAMP, nullable=False)
+    actualizado = Column(TIMESTAMP, nullable=True)
 
 class FotografiaPerfil(base):
     __tablename__ = 'fotografia_perfil'
@@ -72,8 +72,8 @@ class FotografiaPerfil(base):
     id = Column(Integer, primary_key=True)
     id_empleado = Column(String, ForeignKey('empleado.id'))
     ruta = Column(String, nullable=False)
-    creado = Column(DateTime, nullable=False)
-    actualizado = Column(DateTime, nullable=True)
+    creado = Column(TIMESTAMP, nullable=False)
+    actualizado = Column(TIMESTAMP, nullable=True)
 
 Session = sessionmaker(db)  
 session = Session()
