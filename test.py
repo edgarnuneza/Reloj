@@ -19,9 +19,9 @@ perfil1.actualizado = datetime.datetime.now()
 
 #Empleado.query.filter_by(id=1).delete()
 #session.delete(empleado1)
-# employee = session.query(Empleado) \
-#         .filter(Empleado.id == 1) \
-#         .first()
+employee = session.query(Empleado) \
+        .filter(Empleado.matricula == 1) \
+        .first()
 #print(employee.puesto)
 #session.delete(employee)
 
