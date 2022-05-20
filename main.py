@@ -8,6 +8,7 @@ from imutils.video import VideoStream
 import threading
 import copy
 from collections import Counter
+import uuid
 
 __name__ = "__main__"
 
@@ -72,9 +73,14 @@ def identificarRostro(results):
         if resultado[0] == rostroFinal:
             imagenMostrar = resultado[1]
             break
+    
+    nombreImagen = f"./images/{uuid.uuid1()}.jpg"
+    cv2.imwrite(nombreImagen, imagenMostrar)
 
-    cv2.imshow('frame', imagenMostrar)
-    cv2.waitKey(0)
+    return nombreImagen, rostroFinal
+    #cv2.imshow('frame', imagenMostrar)
+    #cv2.waitKey(0)
+
     grabar()
 
 
