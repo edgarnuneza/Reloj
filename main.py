@@ -44,7 +44,7 @@ def grabar():
 
         cv2.imshow('frame', frame)
 
-        if cv2.waitKey(1) == ord('q'):
+        if cv2.waitKey(1) == ord('q') or count > totalFotos:
             break
 
     cap.release()
