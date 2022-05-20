@@ -14,9 +14,9 @@ class Empleado(base):
     id = Column(String, primary_key=True)
     nombre = Column(String, nullable=False)
     apellido_paterno = Column(String, nullable=False)
-    apellido_materno = Column(String, nullable=False)
+    apellido_materno = Column(String, nullable=True)
     matricula = Column(String, nullable=False, index=True, unique=True)
-    puesto = Column(String, nullable=False)
+    puesto = Column(String, nullable=True)
     creado = Column(TIMESTAMP, nullable=False)
     actualizado = Column(TIMESTAMP, nullable=True)
     

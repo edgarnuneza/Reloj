@@ -78,8 +78,6 @@ def identificarRostro(results):
     grabar()
 
 
-from Controllers.userController import x
-
 if __name__ == '__main__':
     grabar()
 
