@@ -65,7 +65,7 @@ def identificarRostro(results):
             contadorRostros[results[i][0]] = contadorRostros.get(results[i][0]) + 1
 
     rostroFinal = max(contadorRostros, key=contadorRostros.get)
-    print(rostroFinal)
+    print(type(rostroFinal))
     
     imagenMostrar = None
 
@@ -74,14 +74,14 @@ def identificarRostro(results):
             imagenMostrar = resultado[1]
             break
     
-    nombreImagen = f"./images/{uuid.uuid1()}.jpg"
+    nombreImagen = f"./images/{uuid.uuid1()}.png"
     cv2.imwrite(nombreImagen, imagenMostrar)
 
-    return nombreImagen, rostroFinal
-    #cv2.imshow('frame', imagenMostrar)
-    #cv2.waitKey(0)
+    # print(nombreImagen, rostroFinal)
+    # return [nombreImagen, rostroFinal]
+    cv2.imshow('frame', imagenMostrar)
+    cv2.waitKey(0)
 
-    grabar()
 
 
 if __name__ == '__main__':
