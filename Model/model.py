@@ -24,7 +24,7 @@ class Perfil(base):
     __tablename__ = 'perfil'
 
     id = Column(Integer, primary_key=True)
-    nombre = Column(String, nullable=False)
+    nombre = Column(String, nullable=False, index=True, unique=True)
     descripcion = Column(String)
     creado = Column(TIMESTAMP, nullable=False)
     actualizado = Column(TIMESTAMP, nullable=True)
@@ -70,6 +70,7 @@ class FotografiaPerfil(base):
     __tablename__ = 'fotografia_perfil'
 
     id = Column(Integer, primary_key=True)
+    #Hacer campo unico
     id_empleado = Column(String, ForeignKey('empleado.id'))
     ruta = Column(String, nullable=False)
     creado = Column(TIMESTAMP, nullable=False)

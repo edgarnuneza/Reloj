@@ -26,7 +26,7 @@ class EmpleadoController:
             session.commit()
             
         except Exception as error:
-            return error
+            raise Exception(error)
 
     def actualizar(self, updateEmpleado):
         try:
@@ -40,6 +40,9 @@ class EmpleadoController:
 
             empleadoBd = self.get(updateEmpleado.id)
 
+            if not empleadoBd:
+                raise Exception("No se encontro el empleado")
+
             empleadoBd.nombre = updateEmpleado.nombre
             empleadoBd.apellido_paterno = updateEmpleado.apellido_paterno
             empleadoBd.apellido_materno = updateEmpleado.apellido_materno
@@ -50,7 +53,7 @@ class EmpleadoController:
             session.add(empleadoBd)
             session.commit()
         except Exception as error:
-            return error
+            raise Exception(error)
 
     def eliminar(self, id):
         empleadoEliminar = self.get(id)
@@ -79,6 +82,6 @@ empleado1.creado = datetime.datetime.now()
 empleado1.actualizado = datetime.datetime.now()
 
 try:
-    print(c.actualizar(empleado1))
+    print(c.agregar(empleado1))
 except Exception as e:
     print(e)
