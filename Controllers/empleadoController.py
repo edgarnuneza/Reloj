@@ -33,16 +33,12 @@ class EmpleadoController:
             if not updateEmpleado.id or not updateEmpleado.nombre or not updateEmpleado.apellido_paterno or not updateEmpleado.matricula:
                 raise Exception("Hay campos vacíos")
         
-            existeMatricula = session.query(Empleado).filter(Empleado.matricula == updateEmpleado.matricula and Empleado.id != updateEmpleado.id).first()
-
+            existeMatricula = session.query(Empleado).filter(Empleado.matricula == updateEmpleado.matricula, Empleado.id != updateEmpleado.id).first()
+            
             if existeMatricula:
                 raise Exception("El campo debe ser único")
 
-            
-            empleadoBd = session.query(Empleado).get(updateEmpleado.id)
-
-            if empleadoBd == None:
-                raise Exception("No se encontro el empleado")
+            empleadoBd = self.get(updateEmpleado.id)
 
             empleadoBd.nombre = updateEmpleado.nombre
             empleadoBd.apellido_paterno = updateEmpleado.apellido_paterno
@@ -51,24 +47,24 @@ class EmpleadoController:
             empleadoBd.puesto = updateEmpleado.puesto
             empleadoBd.actualizado = datetime.datetime.now()
 
+            session.add(empleadoBd)
             session.commit()
         except Exception as error:
             return error
 
+    def eliminar(self, id):
+        empleadoEliminar = self.get(id)
+        session.delete(empleadoEliminar)
+        session.commit()
 
+    def get(self, id):
+        empleado = session.query(Empleado).get(id)
 
-    # def eliminar(self, id):
-    #     pass
-    # def get(self, id):
-    #     pass
-
-
+        if empleado == None:
+            raise Exception("No se encontro el empleado")
         
+        return empleado
         
-
-
-
-
 
 c = EmpleadoController()
 
@@ -77,15 +73,12 @@ empleado1.id= "8f902684-d7e7-11ec-a474-c1f31a9a582d"
 empleado1.nombre='Hector'
 empleado1.apellido_paterno="Hernandez"
 empleado1.apellido_materno="Perez"
-empleado1.matricula='17112019'
-empleado1.puesto='Dios'
+empleado1.matricula='17112016'
+empleado1.puesto='Dios2'
 empleado1.creado = datetime.datetime.now()
 empleado1.actualizado = datetime.datetime.now()
 
-# session.add(empleado1)
-# session.commit()
-
 try:
-    c.actualizar(empleado1)
+    print(c.actualizar(empleado1))
 except Exception as e:
     print(e)
