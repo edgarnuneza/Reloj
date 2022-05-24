@@ -56,7 +56,7 @@ class PermisosController:
         session.commit()
 
     def get(self, id):
-        perfil = session.query(Perfil).get(id)
+        perfil = session.query(Permisos).get(id)
 
         if perfil == None:
             raise Exception("No se encontro el perfil")

@@ -45,6 +45,7 @@ class Usuario(base):
     id = Column(String, primary_key=True)
     user_name = Column(String, nullable=False)
     password = Column(String, nullable=False)
+    salt = Column(String, nullable=False)
     creado = Column(TIMESTAMP, nullable=False)
     actualizado = Column(TIMESTAMP, nullable=True)
 
@@ -61,7 +62,7 @@ class Config(base):
     __tablename__ = 'config'
 
     id = Column(Integer, primary_key=True)
-    nombre =  Column(String, nullable=False)
+    nombre =  Column(String, nullable=False, index=True, unique=True)
     valor =  Column(String, nullable=False)
     creado = Column(TIMESTAMP, nullable=False)
     actualizado = Column(TIMESTAMP, nullable=True)
@@ -71,7 +72,7 @@ class FotografiaPerfil(base):
 
     id = Column(Integer, primary_key=True)
     #Hacer campo unico
-    id_empleado = Column(String, ForeignKey('empleado.id'))
+    id_empleado = Column(String, ForeignKey('empleado.id'), index=True, unique=True)
     ruta = Column(String, nullable=False)
     creado = Column(TIMESTAMP, nullable=False)
     actualizado = Column(TIMESTAMP, nullable=True)

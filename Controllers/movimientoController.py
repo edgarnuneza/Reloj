@@ -30,6 +30,9 @@ class MovimientoController:
             if not updateMovimiento.id or not updateMovimiento.id_empleado or not updateMovimiento.tipo_movimiento or not updateMovimiento.tiempo:
                 raise Exception("Hay campos vacíos")
         
+            if not (updateMovimiento.tipo_movimiento.lower() == "entrada" or updateMovimiento.tipo_movimiento.lower() == "salida"):
+                 raise Exception("El tipo de movimiento debe ser entrada o salida")
+
             movimientoBd = self.get(updateMovimiento.id)
 
             if not movimientoBd:
@@ -61,12 +64,12 @@ class MovimientoController:
 movimiento1 = Movimiento()
 movimiento1.id = 1
 movimiento1.id_empleado = 'dfb836a1-d7e8-11ec-a474-c1f31a9a582d'
-movimiento1.tipo_movimiento = "salida"
+movimiento1.tipo_movimiento = "entrada"
 movimiento1.tiempo = datetime.datetime.now()
 
 c = MovimientoController()
 
 try:
-    c.eliminar(1)
+    c.actualizar(movimiento1)
 except Exception as e:
     print(e)

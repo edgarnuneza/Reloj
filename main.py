@@ -13,8 +13,8 @@ import uuid
 __name__ = "__main__"
 
 def grabar():
-    data = pickle.loads(open("./pr_encodings.pkl", "rb").read())
-    detector = cv2.CascadeClassifier("./haarcascade_frontalface_default.xml")
+    data = pickle.loads(open("./Data/Reconocimiento/pr_encodings.pkl", "rb").read())
+    detector = cv2.CascadeClassifier("./Data/Reconocimiento/haarcascade_frontalface_default.xml")
 
     r = Reconocedor(data, detector)
     cap = cv2.VideoCapture(2)
