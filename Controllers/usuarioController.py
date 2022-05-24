@@ -3,6 +3,7 @@ from numpy import real_if_close
 sys.path.insert(0, os.path.abspath(os.getcwd()) + '/Model')
 from model import Usuario, session
 import datetime
+import hashlib
 
 class UsuarioController:
     def __init__(self):
@@ -18,6 +19,8 @@ class UsuarioController:
             if existeUsuario:
                 raise Exception("El campo debe ser único")
 
+            newUsuario.salt = os.urandom(32)
+            newUsuario.password = hashlib.pbkdf2_hmac('sha256', newUsuario.password.encode('utf-8'), newUsuario.salt, 100000)
             newUsuario.creado = datetime.datetime.now()
             newUsuario.actualizado = datetime.datetime.now()
 
@@ -52,15 +55,17 @@ class UsuarioController:
             raise Exception(error)
 
     def eliminar(self, id):
-        perfilEliminar = self.get(id)
-        session.delete(perfilEliminar)
+        usuarioEliminar = self.get(id)
+        session.delete(usuarioEliminar)
         session.commit()
 
     def get(self, id):
-        perfil = session.query(Perfil).get(id)
+        perfil = session.query(Usuario).get(id)
 
         if perfil == None:
             raise Exception("No se encontro el perfil")
         
         return perfil
-
+    
+    def checkPassword(self, idUsuario, passwordToCheck):
+        pass
