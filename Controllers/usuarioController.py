@@ -30,23 +30,25 @@ class UsuarioController:
         except Exception as error:
             raise Exception(error)
 
-    def actualizar(self, newUsuario):
+    def actualizar(self, updateUsuario):
         try:
-            if not newUsuario.id or not newUsuario.user_name or not newUsuario.password:
+            if not updateUsuario.id or not updateUsuario.user_name or not updateUsuario.password:
                 raise Exception("Hay campos vacíos")
         
-            existeNombre = session.query(Usuario).filter(Usuario.user_name == newUsuario.nombuser_namere, Usuario.id != newUsuario.id).first()
+            existeNombre = session.query(Usuario).filter(Usuario.user_name == updateUsuario.nombuser_namere, Usuario.id != updateUsuario.id).first()
             
             if existeNombre:
                 raise Exception("El campo debe ser único")
 
-            usuarioBd = self.get(newUsuario.id)
+            usuarioBd = self.get(updateUsuario.id)
 
             if not usuarioBd:
                 raise Exception("No se encontro el perfil")
 
-            usuarioBd.user_name = newUsuario.user_name
-            usuarioBd.password = newUsuario.password
+            usuarioBd.salt = os.urandom(32)
+            usuarioBd.password = hashlib.pbkdf2_hmac('sha256', updateUsuario.password.encode('utf-8'), usuarioBd.salt, 100000)
+            usuarioBd.user_name = updateUsuario.user_name
+            usuarioBd.password = updateUsuario.password
             usuarioBd.actualizado = datetime.datetime.now()
 
             session.add(usuarioBd)
@@ -63,7 +65,7 @@ class UsuarioController:
         perfil = session.query(Usuario).get(id)
 
         if perfil == None:
-            raise Exception("No se encontro el perfil")
+            raise Exception("No se encontro el usuario")
         
         return perfil
     
