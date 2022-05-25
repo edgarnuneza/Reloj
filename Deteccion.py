@@ -8,6 +8,9 @@ from tkinter import Tk
 from gui import crearVentana
 import cv2
 
+
+
+
 def iniciar():
     global cap
 
@@ -35,6 +38,9 @@ def finalizar():
     cap.release()
 
 
+def relative_to_assets(path: str) -> Path:
+    return ASSETS_PATH / Path(path)
+
 cap = None
 def construirVentana(root):
     '''btnFinalizar = Button(root, text="Finalizar", width=45, command=finalizar)
@@ -43,12 +49,12 @@ def construirVentana(root):
     lblVideo.grid(column=0, row=1, columnspan=2)
     cap = cv2.VideoCapture(0)'''
     # print(grabar())
-    x = grabar()
-    print(x[0])
+    # x = grabar()
+    # print(x[0])
     window = Tk()
-    crearVentana(window, x[0], "edgar")
+    #file=relative_to_assets("cr.jpg")
+    crearVentana(window, "./Data/cr.jpg", "edgar")
     
-
     root.mainloop()
 
 
