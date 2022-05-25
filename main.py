@@ -84,7 +84,7 @@ def identificarRostro(results):
 
 
 
-if __name__ == '__main__':
-    grabar()
+# if __name__ == '__main__':
+#     grabar()
 
 
