@@ -94,7 +94,7 @@ def crearVentana(window, ruta, nombre):
         600.0,
         300.0,
         anchor="nw",
-        text="Matricua: ",
+        text="Matrícula: ",
         fill="#000000",
         font=("Inter", 28 * -1)
     )

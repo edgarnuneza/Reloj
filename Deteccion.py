@@ -47,15 +47,10 @@ def construirVentana(root):
     # x = grabar()
     # print(x[0])
 
-    window = Tk()
-    im = Image.open("./Data/cr.jpg")
-    ph = ImageTk.PhotoImage(im)
-
-    label = Label(window, image=ph)
-    label.image=ph
+    #window = Tk()
 
     #file=relative_to_assets("cr.jpg")
-    crearVentana(window, "./Data/cr.jpg", "edgar")
+    crearVentana(root, "./Data/cr.jpg", "edgar")
     
     root.mainloop()
 
