@@ -1,7 +1,7 @@
 
 from pathlib import Path
 
-# from tkinter import *
+from tkinter import *
 # Explicit imports to satisfy Flake8
 
 from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage
@@ -10,13 +10,11 @@ from Deteccion import construirVentana
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path("./assets")
 
-
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
 def iniciar_Sesion():
     construirVentana(window)
-
 
 window = Tk()
 

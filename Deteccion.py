@@ -8,9 +8,6 @@ from tkinter import Tk
 from gui import crearVentana
 import cv2
 
-
-
-
 def iniciar():
     global cap
 
@@ -37,11 +34,9 @@ def finalizar():
     global cap
     cap.release()
 
-
-def relative_to_assets(path: str) -> Path:
-    return ASSETS_PATH / Path(path)
-
 cap = None
+
+
 def construirVentana(root):
     '''btnFinalizar = Button(root, text="Finalizar", width=45, command=finalizar)
     btnFinalizar.grid(column=1, row=0, padx=5, pady=5)
@@ -51,7 +46,14 @@ def construirVentana(root):
     # print(grabar())
     # x = grabar()
     # print(x[0])
+
     window = Tk()
+    im = Image.open("./Data/cr.jpg")
+    ph = ImageTk.PhotoImage(im)
+
+    label = Label(window, image=ph)
+    label.image=ph
+
     #file=relative_to_assets("cr.jpg")
     crearVentana(window, "./Data/cr.jpg", "edgar")
     
