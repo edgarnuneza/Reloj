@@ -3,6 +3,7 @@
 # https://github.com/ParthJadhav/Tkinter-Designer
 
 #push por fa
+#Si jalo
 
 from pathlib import Path
 
