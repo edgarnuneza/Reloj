@@ -1,9 +1,9 @@
 from sqlalchemy import TIMESTAMP, ForeignKey, PrimaryKeyConstraint, create_engine, null  
-from sqlalchemy import Column, String, Integer, TIMESTAMP
+from sqlalchemy import Column, String, Integer, TIMESTAMP, Boolean
 from sqlalchemy.ext.declarative import declarative_base  
 from sqlalchemy.orm import sessionmaker
 
-db_string = "postgresql://postgres:123@localhost:5432/reloj"
+db_string = "postgresql://postgres:vision@localhost:5432/reloj"
 
 db = create_engine(db_string)  
 base = declarative_base()
@@ -16,6 +16,7 @@ class Empleado(base):
     apellido_paterno = Column(String, nullable=False)
     apellido_materno = Column(String, nullable=True)
     matricula = Column(String, nullable=False, index=True, unique=True)
+    datosCapturados = Column(Boolean, nullable=True)
     puesto = Column(String, nullable=True)
     creado = Column(TIMESTAMP, nullable=False)
     actualizado = Column(TIMESTAMP, nullable=True)

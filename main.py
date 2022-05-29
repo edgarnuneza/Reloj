@@ -17,7 +17,7 @@ def grabar():
     detector = cv2.CascadeClassifier("./Data/Reconocimiento/haarcascade_frontalface_default.xml")
 
     r = Reconocedor(data, detector)
-    cap = cv2.VideoCapture(2)
+    cap = cv2.VideoCapture(0)
     
     if not cap.isOpened():
         print("Cannot open camera")
@@ -83,8 +83,6 @@ def identificarRostro(results):
     cv2.waitKey(0)
 
 
-
-# if __name__ == '__main__':
-#     grabar()
-
+if __name__ == '__main__':
+    grabar()
 
