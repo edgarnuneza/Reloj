@@ -16,9 +16,11 @@
                text-align: center;
           }
      </style>
-</head>
-<body class = "container">
-     <h1>Video en directo</h1>
+
+     <h1>Registo</h1>
      <img src="{{ url_for('getRostroIdentificado') }}">
+     <a href="{{ url_for('index') }}">Regresar</a>
+     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+     <script src="{{ url_for('static', filename='scripts/script.js') }}"></script>
 </body>
 </html>

@@ -65,14 +65,13 @@ def generate():
         else:
             if redireccionar:
                 redireccionar = False
-                #browserExe = "chromium" 
-                #os.system("pkill "+browserExe) 
+                browserExe = "chromium" 
+                os.system("pkill "+browserExe) 
                 webbrowser.open("http://127.0.0.1:5000/registro")
                 redireccionar = True
             break
         # if count > totalFotos:
         #     return redirect(url_for('https://www.google.com'))
-
 
 @app.route("/")
 def index():

@@ -77,8 +77,6 @@ def identificarRostro(results):
     nombreImagen = f"./images/{uuid.uuid1()}.png"
     cv2.imwrite(nombreImagen, imagenMostrar)
 
-    # print(nombreImagen, rostroFinal)
-    # return [nombreImagen, rostroFinal]
     cv2.imshow('frame', imagenMostrar)
     cv2.waitKey(0)
 
