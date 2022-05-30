@@ -19,7 +19,7 @@ import os
 
 app = Flask(__name__)
 
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(2)
 
 data = pickle.loads(open("./Data/Reconocimiento/pr_encodings.pkl", "rb").read())
 detector = cv2.CascadeClassifier("./Data/Reconocimiento/haarcascade_frontalface_default.xml")
@@ -33,14 +33,12 @@ totalFotos = 15
 count = 0
 results = []
 idEmpleado = ''
-redireccionar = True
 
 @app.route("/generate")
 def generate():
     global count
     global results
     global totalFotos
-    global redireccionar
 
     while True:
         ret, frame = cap.read()
@@ -62,16 +60,8 @@ def generate():
                 continue
             yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' +
                 bytearray(encodedImage) + b'\r\n')
-        else:
-            if redireccionar:
-                redireccionar = False
-                browserExe = "chromium" 
-                os.system("pkill "+browserExe) 
-                webbrowser.open("http://127.0.0.1:5000/registro")
-                redireccionar = True
+
             break
-        # if count > totalFotos:
-        #     return redirect(url_for('https://www.google.com'))
 
 @app.route("/")
 def index():
@@ -120,12 +110,6 @@ def identificarRostro(results):
             imagenMostrar = resultado[1]
             break
     
-    # nombreImagen = f"./images/{uuid.uuid1()}.png"
-    # cv2.imwrite(nombreImagen, imagenMostrar)
-
-    # cv2.imshow('frame', imagenMostrar)
-    # cv2.waitKey(0)
-
     (flag, encodedImage) = cv2.imencode(".jpg", imagenMostrar)
     yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' +
     bytearray(encodedImage) + b'\r\n')
@@ -134,7 +118,11 @@ def identificarRostro(results):
 def hello():
     global totalFotos
     global count
-    return jsonify(total=count, limit=totalFotos)
+
+    if count > totalFotos:
+        return jsonify(isCaptured = True)
+    else:
+        return jsonify(isCaptured = False)
 
 def reiniciar():
     global totalFotos 
