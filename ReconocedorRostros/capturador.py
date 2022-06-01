@@ -4,21 +4,28 @@ import imutils
 import shutil
 
 class Capturador:
-	def __init__(self, identificador):
+	def __init__(self, identificador=""):
 		self.identificador = identificador
-		self.dataPath = "./Data/Fotos/Entrenamiento"
+		self.dataPath = "./Data/FotosEntrenamiento"
 		self.completePath = self.dataPath + "/" + identificador
 		self.crearCarpeta()
 		self.count = 0
 		self.limite = 300
+		self.detener = False
  
 	def crearCarpeta(self):
+		if self.identificador == '':
+			return False
+
 		if not os.path.exists(self.completePath):
 			os.makedirs(self.completePath)
 			return True
 		
 	def capturar(self):
-		cap = cv2.VideoCapture(0)
+		if self.identificador == '':
+			return False
+
+		cap = cv2.VideoCapture(2)
 		
 		faceClassif = cv2.CascadeClassifier(cv2.data.haarcascades+'haarcascade_frontalface_default.xml')
 		self.count = 0
@@ -40,14 +47,24 @@ class Capturador:
 				cv2.imwrite(self.completePath + '/rotro_{}.jpg'.format(self.count),rostro)
 				self.count = self.count + 1
 
-			cv2.imshow('frame',frame)
+			(flag, encodedImage) = cv2.imencode(".jpg", frame)
+			if not flag:
+				continue
+			yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' +
+                bytearray(encodedImage) + b'\r\n')
 
-			k =  cv2.waitKey(1)
-			if k == 27 or self.count >= self.limite:
+			if self.count >= self.limite:
+				self.detener = True
 				break
 
+			# cv2.imshow('frame',frame)
+
+			# k =  cv2.waitKey(1)
+			# if k == 27 or self.count >= self.limite:
+			# 	break
+
 		cap.release()
-		cv2.destroyAllWindows()
+		#cv2.destroyAllWindows()
 
 		if self.count < self.limite:
 			shutil.rmtree(self.completePath)
@@ -55,5 +72,5 @@ class Capturador:
 
 		return True
 
-c = Capturador('edgar')
-print(c.capturar())
+# c = Capturador('edgar')
+# print(c.capturar())

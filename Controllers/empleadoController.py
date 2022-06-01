@@ -14,10 +14,11 @@ class EmpleadoController:
                 raise Exception("Hay campos vacíos")
         
             newEmpleado.id = uuid.uuid1()
+            newEmpleado.id = str(newEmpleado.id).replace("-", "")[0:20]
             newEmpleado.creado = datetime.datetime.now()
             newEmpleado.actualizado = datetime.datetime.now()
 
-            existeMatricula = session.query(Empleado).filter(Empleado.matricula == empleado.matricula).first()
+            existeMatricula = session.query(Empleado).filter(Empleado.matricula == newEmpleado.matricula).first()
 
             if existeMatricula:
                 raise Exception("El campo debe ser único")
@@ -69,19 +70,21 @@ class EmpleadoController:
         return empleado
         
 
-c = EmpleadoController()
+# c = EmpleadoController()
 
-empleado1=Empleado()
-empleado1.id= "8f902684-d7e7-11ec-a474-c1f31a9a582d"
-empleado1.nombre='Hector'
-empleado1.apellido_paterno="Hernandez"
-empleado1.apellido_materno="Perez"
-empleado1.matricula='17112016'
-empleado1.puesto='Dios2'
-empleado1.creado = datetime.datetime.now()
-empleado1.actualizado = datetime.datetime.now()
+# empleado1=Empleado()
+# # empleado1.id= "8f902684-d7e7-11ec-a474-c1f31a9a582d"
+# empleado1.nombre='Hector'
+# empleado1.apellido_paterno="Hernandez"
+# empleado1.apellido_materno="Perez"
+# empleado1.matricula='17112019'
+# empleado1.puesto='Dios2'
+# empleado1.creado = datetime.datetime.now()
+# empleado1.actualizado = datetime.datetime.now()
 
-try:
-    print(c.agregar(empleado1))
-except Exception as e:
-    print(e)
+# c.agregar(empleado1)
+
+# try:
+#     print(c.agregar(empleado1))
+# except Exception as e:
+#     print(e)

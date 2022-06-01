@@ -60,6 +60,7 @@ class Reconocedor:
                 # each recognized face face
                 for i in matchedIdxs:
                     name = self.data["names"][i]
+                    name = name.replace("pins_", "")
                     counts[name] = counts.get(name, 0) + 1
 
                 # determine the recognized face with the largest number
@@ -74,10 +75,10 @@ class Reconocedor:
         for ((top, right, bottom, left), name) in zip(boxes, names):
             # draw the predicted face name on the image
             cv2.rectangle(image, (left, top), (right, bottom),
-                (0, 255, 0), 2)
+                (83, 175, 70), 2)
             y = top - 15 if top - 15 > 15 else top + 15
             cv2.putText(image, name, (left, y), cv2.FONT_HERSHEY_SIMPLEX,
-                0.75, (0, 255, 0), 2)
+                0.75, (83, 175, 70), 2)
 
         # display the image to our screen
         # cv2.imshow("image", image)

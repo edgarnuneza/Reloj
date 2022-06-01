@@ -3,7 +3,7 @@ from sqlalchemy import Column, String, Integer, TIMESTAMP, Boolean
 from sqlalchemy.ext.declarative import declarative_base  
 from sqlalchemy.orm import sessionmaker
 
-db_string = "postgresql://postgres:vision@localhost:5432/reloj"
+db_string = "postgresql://postgres:123@localhost:5432/reloj"
 
 db = create_engine(db_string)  
 base = declarative_base()
@@ -68,15 +68,15 @@ class Config(base):
     creado = Column(TIMESTAMP, nullable=False)
     actualizado = Column(TIMESTAMP, nullable=True)
 
-class FotografiaPerfil(base):
-    __tablename__ = 'fotografia_perfil'
+# class FotografiaPerfil(base):
+#     __tablename__ = 'fotografia_perfil'
 
-    id = Column(Integer, primary_key=True)
-    #Hacer campo unico
-    id_empleado = Column(String, ForeignKey('empleado.id'), index=True, unique=True)
-    ruta = Column(String, nullable=False)
-    creado = Column(TIMESTAMP, nullable=False)
-    actualizado = Column(TIMESTAMP, nullable=True)
+#     id = Column(Integer, primary_key=True)
+#     #Hacer campo unico
+#     id_empleado = Column(String, ForeignKey('empleado.id'), index=True, unique=True)
+#     ruta = Column(String, nullable=False)
+#     creado = Column(TIMESTAMP, nullable=False)
+#     actualizado = Column(TIMESTAMP, nullable=True)
 
 Session = sessionmaker(db)  
 session = Session()

@@ -9,13 +9,12 @@ from imutils.video import VideoStream
 import threading
 import copy
 from collections import Counter
-import uuid
 from email.mime import image
 from functools import total_ordering
 import pickle
 from types import coroutine
-import webbrowser
-import os
+from ReconocedorRostros.capturador import Capturador
+from Controllers.empleadoController import EmpleadoController
 
 app = Flask(__name__)
 
@@ -24,10 +23,12 @@ cap = cv2.VideoCapture(2)
 data = pickle.loads(open("./Data/Reconocimiento/pr_encodings.pkl", "rb").read())
 detector = cv2.CascadeClassifier("./Data/Reconocimiento/haarcascade_frontalface_default.xml")
 r = Reconocedor(data, detector)
+c = Capturador()
+
 
 if not cap.isOpened():
-        print("Cannot open camera")
-        exit()
+    print("Cannot open camera")
+    exit()
 
 totalFotos = 15
 count = 0
@@ -61,27 +62,30 @@ def generate():
             yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' +
                 bytearray(encodedImage) + b'\r\n')
 
-            break
-
 @app.route("/")
 def index():
     reiniciar()
     return render_template("grabador.html")
 
-
 @app.route("/video_feed")
 def video_feed():
-
     return Response(generate(),
+        mimetype = "multipart/x-mixed-replace; boundary=frame")
+
+
+@app.route("/capturador/<empleadoId>")
+def capturador(empleadoId):
+    global cap
+    global c
+    cap.release()
+    c.identificador = empleadoId
+    
+    return Response(c.capturar(), 
         mimetype = "multipart/x-mixed-replace; boundary=frame")
 
 @app.route("/registro")
 def registro():
     return render_template("registro.html")
-
-@app.route("/test")
-def test():
-    return "Hola"
 
 @app.route("/getRostroIdentificado")
 def getRostroIdentificado():
@@ -101,7 +105,7 @@ def identificarRostro(results):
             contadorRostros[results[i][0]] = contadorRostros.get(results[i][0]) + 1
 
     rostroFinal = max(contadorRostros, key=contadorRostros.get)
-    print(type(rostroFinal))
+    print(rostroFinal)
     
     imagenMostrar = None
 
@@ -109,6 +113,9 @@ def identificarRostro(results):
         if resultado[0] == rostroFinal:
             imagenMostrar = resultado[1]
             break
+    
+    if rostroFinal == 'Desconocido':
+        imagenMostrar = cv2.imread('./Data/desconocido.jpg')
     
     (flag, encodedImage) = cv2.imencode(".jpg", imagenMostrar)
     yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' +
@@ -124,6 +131,28 @@ def hello():
     else:
         return jsonify(isCaptured = False)
 
+
+@app.route('/api/countcaptura')
+def countCaptura():
+    global c
+
+    return jsonify(detener = c.detener)
+
+@app.route('/foto/<empleadoId>')
+def foto(empleadoId):
+    empleadoC = EmpleadoController()
+
+    try:
+        empleadoEntrenar = empleadoC.get(empleadoId)
+    except Exception as e:
+        empleadoId = None
+        print(e)
+        
+    if empleadoId == None:
+        return "No funciono la busqueda de ID"
+    else:
+        return render_template('capturar.html', data=empleadoId)
+    
 def reiniciar():
     global totalFotos 
     global count
@@ -139,6 +168,5 @@ def reiniciar():
 
 if __name__ == "__main__":
      app.run(debug=False)
-
 
 cap.release()
