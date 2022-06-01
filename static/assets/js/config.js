@@ -7,11 +7,11 @@
 /* -------------------------------------------------------------------------- */
 var CONFIG = {
   isNavbarVerticalCollapsed: false,
-  theme: 'light',
+  theme: "dark",
   isRTL: false,
   isFluid: false,
-  navbarStyle: 'transparent',
-  navbarPosition: 'vertical'
+  navbarStyle: "transparent",
+  navbarPosition: "vertical",
 };
 Object.keys(CONFIG).forEach(function (key) {
   if (localStorage.getItem(key) === null) {
@@ -19,11 +19,11 @@ Object.keys(CONFIG).forEach(function (key) {
   }
 });
 
-if (JSON.parse(localStorage.getItem('isNavbarVerticalCollapsed'))) {
-  document.documentElement.classList.add('navbar-vertical-collapsed');
+if (JSON.parse(localStorage.getItem("isNavbarVerticalCollapsed"))) {
+  document.documentElement.classList.add("navbar-vertical-collapsed");
 }
 
-if (localStorage.getItem('theme') === 'dark') {
-  document.documentElement.classList.add('dark');
+if (localStorage.getItem("theme") === "dark") {
+  document.documentElement.classList.add("dark");
 }
 //# sourceMappingURL=config.js.map

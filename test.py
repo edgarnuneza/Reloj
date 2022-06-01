@@ -65,7 +65,7 @@ def generate():
 @app.route("/")
 def index():
     reiniciar()
-    return render_template("grabador.html")
+    return render_template("Grabando.html")
 
 @app.route("/video_feed")
 def video_feed():
