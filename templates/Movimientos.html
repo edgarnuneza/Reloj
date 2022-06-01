@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- ===============================================-->
+    <!--    Favicons-->
+    <!-- ===============================================-->
+
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="{{ url_for('static', filename='assets/img/favicons/apple-touch-icon.png') }}"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="{{ url_for('static', filename='assets/img/favicons/favicon-32x32.png') }}"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="{{ url_for('static', filename='assets/img/favicons/favicon-16x16.png') }}"
+    />
+    <link
+      rel="shortcut icon"
+      type="image/x-icon"
+      href="{{ url_for('static', filename='assets/img/favicons/favicon.ico') }}"
+    />
+    <link
+      rel="manifest"
+      href="{{ url_for('static', filename='assets/img/favicons/manifest.json') }}"
+    />
+    <meta
+      name="msapplication-TileImage"
+      content="{{ url_for('static', filename='assets/img/favicons/mstile-150x150.png') }}"
+    />
+    <meta name="theme-color" content="#ffffff" />
+    <script src="{{ url_for('static', filename='assets/js/config.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendors/overlayscrollbars/OverlayScrollbars.min.js') }}"></script>
+
+    <!-- ===============================================-->
+    <!--    Stylesheets-->
+    <!-- ===============================================-->
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,500,600,700%7cPoppins:300,400,500,600,700,800,900&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="{{ url_for('static', filename='vendors/overlayscrollbars/OverlayScrollbars.min.css') }}"
+      rel="stylesheet"
+    />
+    <link
+      href="{{ url_for('static', filename='assets/css/theme-rtl.min.css') }}"
+      rel="stylesheet"
+      id="style-rtl"
+    />
+    <link
+      href="{{ url_for('static', filename='assets/css/theme.min.css') }}"
+      rel="stylesheet"
+      id="style-default"
+    />
+    <link
+      href="{{ url_for('static', filename='assets/css/user-rtl.min.css') }}"
+      rel="stylesheet"
+      id="user-style-rtl"
+    />
+    <link
+      href="{{ url_for('static', filename='assets/css/user.min.css') }}"
+      rel="stylesheet"
+      id="user-style-default"
+    />
+    <script>
+      var isRTL = JSON.parse(localStorage.getItem("isRTL"));
+      if (isRTL) {
+        var linkDefault = document.getElementById("style-default");
+        var userLinkDefault = document.getElementById("user-style-default");
+        linkDefault.setAttribute("disabled", true);
+        userLinkDefault.setAttribute("disabled", true);
+        document.querySelector("html").setAttribute("dir", "rtl");
+      } else {
+        var linkRTL = document.getElementById("style-rtl");
+        var userLinkRTL = document.getElementById("user-style-rtl");
+        linkRTL.setAttribute("disabled", true);
+        userLinkRTL.setAttribute("disabled", true);
+      }
+    </script>
+    <title>Artificial Vision</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg bg-light navbar-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Reloj Checador</a
+        ><button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarLightExample"
+          aria-controls="navbarLightExample"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarLightExample">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#"
+                >Empleados</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Movimientos</a>
+            </li>
+
+            <!-- <li class="nav-item">
+              <a
+                class="nav-link disabled"
+                href="#"
+                tabindex="-1"
+                aria-disabled="true"
+                >Disabled</a
+              >
+            </li> -->
+          </ul>
+          <form class="d-flex">
+            <input
+              class="form-control me-2"
+              type="search"
+              placeholder="Search"
+              aria-label="Search"
+            /><button class="btn btn-light" type="submit">Search</button>
+          </form>
+        </div>
+      </div>
+    </nav>
+    <main class="main" id="top">
+      <!-- ===============================================-->
+      <!--    JavaScripts-->
+      <!-- ===============================================-->
+      <div class="container-xxl">
+        <div class="row"><h1 class="font-base mb-3">Movimientos</h1></div>
+
+        <div class="row">
+          <div
+            id="tableExample2"
+            data-list='{"valueNames":["Nombre","Apellido1","tipoMovimiento","Tiempo"],"page":10,"pagination":true}'
+          >
+            <div class="table-responsive scrollbar border border-facebook">
+              <table class="table table-bordered table-striped fs--1 mb-0">
+                <thead class="bg-200 text-900">
+                  <tr>
+                    <th class="sort" data-sort="Nombre">Nombre</th>
+                    <th class="sort" data-sort="Apellido1">Apellido Paterno</th>
+                    <th class="sort" data-sort="tipoMovimiento">
+                      Tipo de Movimiento
+                    </th>
+                    <th class="sort" data-sort="Tiempo" colspan="2">Tiempo</th>
+                  </tr>
+                </thead>
+                <tbody class="list">
+                  <tr>
+                    <td class="Nombre">Miley</td>
+                    <td class="Apellido1">Cyrus</td>
+                    <td class="tipoMovimiento">Entrada</td>
+                    <td class="Tiempo">29/05/2022 11:57am</td>
+
+                    <td>
+                      <button
+                        class="btn p-0"
+                        type="button"
+                        data-bs-toggle="modal"
+                        data-bs-target="#error-modal"
+                        title="Edit"
+                        onclick="llenarInput(this)"
+                      >
+                        <span class="text-500 fas fa-edit"></span>
+                      </button>
+                      <button
+                        class="btn p-0 ms-2"
+                        type="button"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="top"
+                        title="Delete"
+                      >
+                        <span class="text-500 fas fa-trash-alt"></span>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="Nombre">Brenton</td>
+                    <td class="Apellido1">Thwaites</td>
+                    <td class="tipoMovimiento">Entrada</td>
+                    <td class="Tiempo">29/05/2022 11:57am</td>
+
+                    <td>
+                      <button
+                        class="btn p-0"
+                        type="button"
+                        data-bs-toggle="modal"
+                        data-bs-target="#error-modal"
+                        title="Edit"
+                        onclick="llenarInput(this)"
+                      >
+                        <span class="text-500 fas fa-edit"></span>
+                      </button>
+                      <button
+                        class="btn p-0 ms-2"
+                        type="button"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="top"
+                        title="Delete"
+                      >
+                        <span class="text-500 fas fa-trash-alt"></span>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="Nombre">Jennifer</td>
+                    <td class="Apellido1">Lawrence</td>
+                    <td class="tipoMovimiento">Entrada</td>
+                    <td class="Tiempo">29/05/2022 11:57am</td>
+
+                    <td>
+                      <button
+                        class="btn p-0"
+                        type="button"
+                        data-bs-toggle="modal"
+                        data-bs-target="#error-modal"
+                        title="Edit"
+                        onclick="llenarInput(this)"
+                      >
+                        <span class="text-500 fas fa-edit"></span>
+                      </button>
+                      <button
+                        class="btn p-0 ms-2"
+                        type="button"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="top"
+                        title="Delete"
+                      >
+                        <span class="text-500 fas fa-trash-alt"></span>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="Nombre">Henry</td>
+                    <td class="Apellido1">Cavil</td>
+                    <td class="tipoMovimiento">Entrada</td>
+                    <td class="Tiempo">29/05/2022 11:57am</td>
+
+                    <td>
+                      <button
+                        class="btn p-0"
+                        type="button"
+                        data-bs-toggle="modal"
+                        data-bs-target="#error-modal"
+                        title="Edit"
+                        onclick="llenarInput(this)"
+                      >
+                        <span class="text-500 fas fa-edit"></span>
+                      </button>
+                      <button
+                        class="btn p-0 ms-2"
+                        type="button"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="top"
+                        title="Delete"
+                      >
+                        <span class="text-500 fas fa-trash-alt"></span>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="Nombre">Chris</td>
+                    <td class="Apellido1">Evans</td>
+                    <td class="tipoMovimiento">Entrada</td>
+                    <td class="Tiempo">29/05/2022 11:57am</td>
+
+                    <td>
+                      <button
+                        class="btn p-0"
+                        type="button"
+                        data-bs-toggle="modal"
+                        data-bs-target="#error-modal"
+                        title="Edit"
+                        onclick="llenarInput(this)"
+                      >
+                        <span class="text-500 fas fa-edit"></span>
+                      </button>
+                      <button
+                        class="btn p-0 ms-2"
+                        type="button"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="top"
+                        title="Delete"
+                      >
+                        <span class="text-500 fas fa-trash-alt"></span>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="Nombre">Adriana</td>
+                    <td class="Apellido1">Lima</td>
+                    <td class="tipoMovimiento">Entrada</td>
+                    <td class="Tiempo">29/05/2022 11:57am</td>
+
+                    <td>
+                      <button
+                        class="btn p-0"
+                        type="button"
+                        data-bs-toggle="modal"
+                        data-bs-target="#error-modal"
+                        title="Edit"
+                        onclick="llenarInput(this)"
+                      >
+                        <span class="text-500 fas fa-edit"></span>
+                      </button>
+                      <button
+                        class="btn p-0 ms-2"
+                        type="button"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="top"
+                        title="Delete"
+                      >
+                        <span class="text-500 fas fa-trash-alt"></span>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="Nombre">Bill</td>
+                    <td class="Apellido1">Gates</td>
+                    <td class="tipoMovimiento">Entrada</td>
+                    <td class="Tiempo">29/05/2022 11:57am</td>
+
+                    <td>
+                      <button
+                        class="btn p-0"
+                        type="button"
+                        data-bs-toggle="modal"
+                        data-bs-target="#error-modal"
+                        title="Edit"
+                        onclick="llenarInput(this)"
+                      >
+                        <span class="text-500 fas fa-edit"></span>
+                      </button>
+                      <button
+                        class="btn p-0 ms-2"
+                        type="button"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="top"
+                        title="Delete"
+                      >
+                        <span class="text-500 fas fa-trash-alt"></span>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="Nombre">Irina</td>
+                    <td class="Apellido1">Shayk</td>
+                    <td class="tipoMovimiento">Entrada</td>
+                    <td class="Tiempo">29/05/2022 11:57am</td>
+
+                    <td>
+                      <button
+                        class="btn p-0"
+                        type="button"
+                        data-bs-toggle="modal"
+                        data-bs-target="#error-modal"
+                        title="Edit"
+                        onclick="llenarInput(this)"
+                      >
+                        <span class="text-500 fas fa-edit"></span>
+                      </button>
+                      <button
+                        class="btn p-0 ms-2"
+                        type="button"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="top"
+                        title="Delete"
+                      >
+                        <span class="text-500 fas fa-trash-alt"></span>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="d-flex justify-content-center mt-3">
+              <button
+                class="btn btn-sm btn-falcon-default me-1"
+                type="button"
+                title="Previous"
+                data-list-pagination="prev"
+              >
+                <span class="fas fa-chevron-left"></span>
+              </button>
+              <ul class="pagination mb-0"></ul>
+              <button
+                class="btn btn-sm btn-falcon-default ms-1"
+                type="button"
+                title="Next"
+                data-list-pagination="next"
+              >
+                <span class="fas fa-chevron-right"> </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Modal -->
+      <div
+        class="modal fade"
+        id="error-modal"
+        tabindex="-1"
+        role="dialog"
+        aria-hidden="true"
+      >
+        <div
+          class="modal-dialog modal-dialog-centered"
+          role="document"
+          style="max-width: 500px"
+        >
+          <div class="modal-content position-relative">
+            <div class="position-absolute top-0 end-0 mt-2 me-2 z-index-1">
+              <button
+                class="btn-close btn btn-sm btn-circle d-flex flex-center transition-base"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body p-0">
+              <div class="rounded-top-lg py-3 ps-4 pe-6 bg-light">
+                <h4 class="mb-1" id="modalExampleDemoLabel">Editar Empleado</h4>
+              </div>
+              <div class="p-4 pb-0">
+                <form>
+                  <div class="mb-3">
+                    <label class="col-form-label" for="inputName"
+                      >Nombre:</label
+                    >
+                    <input class="form-control" id="inputName" type="text" />
+                  </div>
+                  <div class="mb-3">
+                    <label class="col-form-label" for="inputApellido1"
+                      >Apellido Paterno:</label
+                    >
+                    <input
+                      class="form-control"
+                      id="inputApellido1"
+                      type="text"
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label class="col-form-label" for="inputApellido2"
+                      >Apellido Materno:</label
+                    >
+                    <input
+                      class="form-control"
+                      id="inputApellido2"
+                      type="text"
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label class="col-form-label" for="inputMatricula"
+                      >Matricula:</label
+                    >
+                    <input
+                      class="form-control"
+                      id="inputMatricula"
+                      type="text"
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label class="col-form-label" for="selectPuesto"
+                      >Puesto:</label
+                    >
+                    <select
+                      id="selectPuesto"
+                      class="form-select"
+                      aria-label="Default select example"
+                    >
+                      <option selected="">Puesto</option>
+                      <option value="1">One</option>
+                      <option value="2">Two</option>
+                      <option value="3">Three</option>
+                    </select>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                class="btn btn-secondary"
+                type="button"
+                data-bs-dismiss="modal"
+              >
+                Cancelar
+              </button>
+              <button class="btn btn-primary" type="button">Guardar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- fin modal -->
+      <script src="{{ url_for('static', filename='vendors/popper/popper.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='vendors/bootstrap/bootstrap.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='vendors/anchorjs/anchor.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='vendors/is/is.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='vendors/fontawesome/all.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='vendors/lodash/lodash.min.js') }}"></script>
+
+      <script src="https://polyfill.io/v3/polyfill.min.js?features=window.scroll"></script>
+
+      <script src="{{ url_for('static', filename='vendors/list.js/list.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='assets/js/theme.js') }}"></script>
+      <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+      <script src="{{ url_for('static', filename='scripts/script.js') }}"></script>
+    </main>
+  </body>
+</html>
