@@ -8,7 +8,7 @@
     <!-- ===============================================-->
     <!--    Document Title-->
     <!-- ===============================================-->
-    <title>Falcon | Dashboard &amp; Web App Template</title>
+    <title>Reloj Checador</title>
 
     <!-- ===============================================-->
     <!--    Favicons-->
@@ -154,16 +154,24 @@
                       type="submit"
                       name="submit"
                     >
-                      Log in
+                      <a
+                        style="color: white"
+                        href="{{ url_for( 'movimiento') }}"
+                        >Registrar Movimiento</a
+                      >
                     </button>
                   </div>
                   <div class="mb-3">
                     <button
                       class="btn btn-primary d-block w-100 mt-3"
-                      type="submit"
+                      type="button"
                       name="submit"
                     >
-                      Registrar entrada
+                      <a
+                        style="color: white"
+                        href="{{ url_for( 'reconocerPersona') }}"
+                        >Registrar Movimiento</a
+                      >
                     </button>
                   </div>
                 </form>

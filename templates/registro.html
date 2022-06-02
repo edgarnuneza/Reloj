@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Falcon | Dashboard &amp; Web App Template</title>
+    <title>Reloj Checador</title>
 
     <link
       rel="apple-touch-icon"
@@ -163,7 +163,7 @@
           <div class="col">
             <img
               class="img-thumbnail"
-              src="{{ url_for('static', filename='flash.png') }}"
+              src="{{ url_for('getRostroIdentificado') }}"
               alt=""
             />
           </div>
@@ -174,8 +174,8 @@
             </h4>
             <h4>
               Tiempo:
-              <small id="nombre" class="text-muted">
-                With faded secondary text</small
+              <small id="tiempo" class="text-muted">
+                </small
               >
             </h4>
             <button class="btn btn-primary me-1 mb-1" type="button">
@@ -200,5 +200,7 @@
 
     <script src="{{ url_for('static', filename='vendors/list.js/list.min.js') }}"></script>
     <script src="{{ url_for('static', filename='assets/js/theme.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="{{ url_for('static', filename='scripts/script2.js') }}"></script>
   </body>
 </html>

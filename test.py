@@ -24,7 +24,7 @@ data = pickle.loads(open("./Data/Reconocimiento/pr_encodings.pkl", "rb").read())
 detector = cv2.CascadeClassifier("./Data/Reconocimiento/haarcascade_frontalface_default.xml")
 r = Reconocedor(data, detector)
 c = Capturador()
-
+rostroPersona = ''
 
 if not cap.isOpened():
     print("Cannot open camera")
@@ -64,8 +64,16 @@ def generate():
 
 @app.route("/")
 def index():
+    return render_template("login.html")
+
+@app.route("/reconocerPersona")
+def reconocerPersona():
     reiniciar()
     return render_template("Grabando.html")
+
+@app.route("/movimiento")
+def movimiento():
+    return render_template("Movimientos.html")
 
 @app.route("/video_feed")
 def video_feed():
@@ -85,7 +93,8 @@ def capturador(empleadoId):
 
 @app.route("/registro")
 def registro():
-    return render_template("registro.html")
+    global rostroPersona
+    return render_template("registro.html", data=rostroPersona)
 
 @app.route("/getRostroIdentificado")
 def getRostroIdentificado():
@@ -93,8 +102,18 @@ def getRostroIdentificado():
     return Response(identificarRostro(results),
         mimetype = "multipart/x-mixed-replace; boundary=frame")
 
+@app.route('/rostroPersona')
+def getRostro():
+    global rostroPersona
+
+    if rostroPersona == '':
+        return jsonify(rostro = False)
+    else: 
+        rostroPersona = rostroPersona.capitalize()
+        return jsonify(rostro = rostroPersona)
+
 def identificarRostro(results):
-    
+    global rostroPersona
     contadorRostros = {}
     
     for i in range(0, len(results)):
@@ -117,6 +136,7 @@ def identificarRostro(results):
     if rostroFinal == 'Desconocido':
         imagenMostrar = cv2.imread('./Data/desconocido.jpg')
     
+    rostroPersona = rostroFinal
     (flag, encodedImage) = cv2.imencode(".jpg", imagenMostrar)
     yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' +
     bytearray(encodedImage) + b'\r\n')
