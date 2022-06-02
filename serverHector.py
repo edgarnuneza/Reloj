@@ -13,7 +13,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def test():
-    return render_template("Movimientos.html")
+    return render_template("registro.html", data='edgar')
 
 if __name__ == "__main__":
      app.run(debug=True)
