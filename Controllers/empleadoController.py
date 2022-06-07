@@ -69,6 +69,8 @@ class EmpleadoController:
         
         return empleado
         
+    def getAll(self):
+        return session.query(Empleado).all()
 
 # c = EmpleadoController()
 

@@ -7,7 +7,6 @@ db_string = "postgresql://postgres:123@localhost:5432/reloj"
 
 db = create_engine(db_string)  
 base = declarative_base()
-
 class Empleado(base):  
     __tablename__ = 'empleado'
 
@@ -18,15 +17,6 @@ class Empleado(base):
     matricula = Column(String, nullable=False, index=True, unique=True)
     datosCapturados = Column(Boolean, nullable=True)
     puesto = Column(String, nullable=True)
-    creado = Column(TIMESTAMP, nullable=False)
-    actualizado = Column(TIMESTAMP, nullable=True)
-    
-class Perfil(base):
-    __tablename__ = 'perfil'
-
-    id = Column(Integer, primary_key=True)
-    nombre = Column(String, nullable=False, index=True, unique=True)
-    descripcion = Column(String)
     creado = Column(TIMESTAMP, nullable=False)
     actualizado = Column(TIMESTAMP, nullable=True)
 
@@ -49,16 +39,7 @@ class Usuario(base):
     salt = Column(String, nullable=False)
     creado = Column(TIMESTAMP, nullable=False)
     actualizado = Column(TIMESTAMP, nullable=True)
-
-class Permisos(base):
-    __tablename__ = 'permisos'
-
-    id = Column(Integer, primary_key=True)
-    id_perfil = Column(Integer, ForeignKey('perfil.id'))
-    permiso = Column(String, nullable=False)
-    creado = Column(TIMESTAMP, nullable=False)
-    actualizado = Column(TIMESTAMP, nullable=True)
-
+    
 class Config(base):
     __tablename__ = 'config'
 

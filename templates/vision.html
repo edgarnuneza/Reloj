@@ -107,7 +107,7 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarLightExample">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <!-- <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
               <a
                 class="nav-link active"
@@ -125,7 +125,7 @@
               <a class="nav-link" href="{{ url_for( 'reconocerPersona') }}"
                 >Asistencia</a
               >
-            </li>
+            </li> -->
 
             <!-- <li class="nav-item">
               <a
@@ -153,473 +153,69 @@
       <!--    JavaScripts-->
       <!-- ===============================================-->
       <div class="container-xxl">
-        <div class="row"><h1 class="font-base mb-3">Empleados</h1></div>
+        <div class="row"><div class="col"><h1 class="font-base mb-3">Empleados</h1></div>
+        <div class="col"><button class="btn btn-outline-primary me-1 mb-1" type="button" data-bs-toggle="modal"
+          data-bs-target="#error-modal">Agregar</button></div>
+      </div>
 
         <div class="row">
           <div
             id="tableExample2"
-            data-list='{"valueNames":["Nombre","Apellido1","Apellido2","Matricula","Puesto"],"page":10,"pagination":true}'
+            data-list='{"valueNames":["Id","Nombre","Apellido1","Apellido2","Matricula","Puesto","Creado","Actualizado"],"page":10,"pagination":true}'
           >
             <div class="table-responsive scrollbar border border-facebook">
               <table class="table table-bordered table-striped fs--1 mb-0">
                 <thead class="bg-200 text-900">
                   <tr>
+                    <th class="sort" style="display: none;" data-sort="Id">Id</th>
                     <th class="sort" data-sort="Nombre">Nombre</th>
                     <th class="sort" data-sort="Apellido1">Apellido Paterno</th>
                     <th class="sort" data-sort="Apellido2">Apellido Materno</th>
                     <th class="sort" data-sort="Matricula">Matricula</th>
-                    <th class="sort" data-sort="Puesto" colspan="2">Puesto</th>
+                    
+                    <th class="sort" data-sort="Puesto">Puesto</th>
+                    <th class="sort" data-sort="Creado">Creado</th>
+                    <th class="sort" data-sort="Actualizado" colspan="2">Actualizado</th>
                   </tr>
                 </thead>
                 <tbody class="list">
-                  <tr>
-                    <td class="Nombre">Brenton</td>
-                    <td class="Apellido1">Thwaites</td>
-                    <td class="Apellido2">Perez</td>
-                    <td class="Matricula">17112016</td>
-                    <td class="Puesto">Coordinador</td>
-                    <td>
-                      <button
-                        class="btn p-0"
-                        type="button"
-                        data-bs-toggle="modal"
-                        data-bs-target="#error-modal"
-                        title="Edit"
-                        onclick="llenarInput(this)"
-                      >
-                        <span class="text-500 fas fa-edit"></span>
-                      </button>
-                      <button
-                        class="btn p-0 ms-2"
-                        type="button"
-                        data-bs-toggle="tooltip"
-                        data-bs-placement="top"
-                        title="Delete"
-                      >
-                        <span class="text-500 fas fa-trash-alt"></span>
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="Nombre">Eliza</td>
-                    <td class="Apellido1">Taylor</td>
-                    <td class="Apellido2">Nuñez</td>
-                    <td class="Matricula">17112048</td>
-                    <td class="Puesto">Maestro</td>
-                    <td>
-                      <button
-                        class="btn p-0"
-                        type="button"
-                        data-bs-toggle="modal"
-                        data-bs-target="#error-modal"
-                        title="Edit"
-                        onclick="llenarInput(this)"
-                      >
-                        <span class="text-500 fas fa-edit"></span>
-                      </button>
-                      <button
-                        class="btn p-0 ms-2"
-                        type="button"
-                        data-bs-toggle="tooltip"
-                        data-bs-placement="top"
-                        title="Delete"
-                      >
-                        <span class="text-500 fas fa-trash-alt"></span>
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="Nombre">Inbar</td>
-                    <td class="Apellido1">Lavi</td>
-                    <td class="Apellido2">Reyes</td>
-                    <td class="Matricula">17111961</td>
-                    <td class="Puesto">Desarrollador</td>
-                    <td>
-                      <button
-                        class="btn p-0"
-                        type="button"
-                        data-bs-toggle="modal"
-                        data-bs-target="#error-modal"
-                        title="Edit"
-                        onclick="llenarInput(this)"
-                      >
-                        <span class="text-500 fas fa-edit"></span>
-                      </button>
-                      <button
-                        class="btn p-0 ms-2"
-                        type="button"
-                        data-bs-toggle="tooltip"
-                        data-bs-placement="top"
-                        title="Delete"
-                      >
-                        <span class="text-500 fas fa-trash-alt"></span>
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="Nombre">Josh</td>
-                    <td class="Apellido1">Radnor</td>
-                    <td class="Apellido2">Smith</td>
-                    <td class="Matricula">17118574</td>
-                    <td class="Puesto">Coordinador</td>
-                    <td>
-                      <button
-                        class="btn p-0"
-                        type="button"
-                        data-bs-toggle="modal"
-                        data-bs-target="#error-modal"
-                        title="Edit"
-                        onclick="llenarInput(this)"
-                      >
-                        <span class="text-500 fas fa-edit"></span>
-                      </button>
-                      <button
-                        class="btn p-0 ms-2"
-                        type="button"
-                        data-bs-toggle="tooltip"
-                        data-bs-placement="top"
-                        title="Delete"
-                      >
-                        <span class="text-500 fas fa-trash-alt"></span>
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="Nombre">Miley</td>
-                    <td class="Apellido1">Cyrus</td>
-                    <td class="Apellido2">Perez</td>
-                    <td class="Matricula">17112016</td>
-                    <td class="Puesto">Coordinador</td>
-                    <td>
-                      <button
-                        class="btn p-0"
-                        type="button"
-                        data-bs-toggle="modal"
-                        data-bs-target="#error-modal"
-                        title="Edit"
-                        onclick="llenarInput(this)"
-                      >
-                        <span class="text-500 fas fa-edit"></span>
-                      </button>
-                      <button
-                        class="btn p-0 ms-2"
-                        type="button"
-                        data-bs-toggle="tooltip"
-                        data-bs-placement="top"
-                        title="Delete"
-                      >
-                        <span class="text-500 fas fa-trash-alt"></span>
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="Nombre">Morena</td>
-                    <td class="Apellido1">Baccarin</td>
-                    <td class="Apellido2">Perez</td>
-                    <td class="Matricula">17112016</td>
-                    <td class="Puesto">Coordinador</td>
-                    <td>
-                      <button
-                        class="btn p-0"
-                        type="button"
-                        data-bs-toggle="modal"
-                        data-bs-target="#error-modal"
-                        title="Edit"
-                        onclick="llenarInput(this)"
-                      >
-                        <span class="text-500 fas fa-edit"></span>
-                      </button>
-                      <button
-                        class="btn p-0 ms-2"
-                        type="button"
-                        data-bs-toggle="tooltip"
-                        data-bs-placement="top"
-                        title="Delete"
-                      >
-                        <span class="text-500 fas fa-trash-alt"></span>
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="Nombre">Stephen</td>
-                    <td class="Apellido1">Amell</td>
-                    <td class="Apellido2">Perez</td>
-                    <td class="Matricula">17112016</td>
-                    <td class="Puesto">Coordinador</td>
-                    <td>
-                      <button
-                        class="btn p-0"
-                        type="button"
-                        data-bs-toggle="modal"
-                        data-bs-target="#error-modal"
-                        title="Edit"
-                        onclick="llenarInput(this)"
-                      >
-                        <span class="text-500 fas fa-edit"></span>
-                      </button>
-                      <button
-                        class="btn p-0 ms-2"
-                        type="button"
-                        data-bs-toggle="tooltip"
-                        data-bs-placement="top"
-                        title="Delete"
-                      >
-                        <span class="text-500 fas fa-trash-alt"></span>
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="Nombre">Tom Holland</td>
-                    <td class="Apellido1">Cyrus</td>
-                    <td class="Apellido2">Perez</td>
-                    <td class="Matricula">17112016</td>
-                    <td class="Puesto">Coordinador</td>
-                    <td>
-                      <button
-                        class="btn p-0"
-                        type="button"
-                        data-bs-toggle="modal"
-                        data-bs-target="#error-modal"
-                        title="Edit"
-                        onclick="llenarInput(this)"
-                      >
-                        <span class="text-500 fas fa-edit"></span>
-                      </button>
-                      <button
-                        class="btn p-0 ms-2"
-                        type="button"
-                        data-bs-toggle="tooltip"
-                        data-bs-placement="top"
-                        title="Delete"
-                      >
-                        <span class="text-500 fas fa-trash-alt"></span>
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="Nombre">Amanda</td>
-                    <td class="Apellido1">Crew</td>
-                    <td class="Apellido2">Perez</td>
-                    <td class="Matricula">17112016</td>
-                    <td class="Puesto">Coordinador</td>
-                    <td>
-                      <button
-                        class="btn p-0"
-                        type="button"
-                        data-bs-toggle="modal"
-                        data-bs-target="#error-modal"
-                        title="Edit"
-                        onclick="llenarInput(this)"
-                      >
-                        <span class="text-500 fas fa-edit"></span>
-                      </button>
-                      <button
-                        class="btn p-0 ms-2"
-                        type="button"
-                        data-bs-toggle="tooltip"
-                        data-bs-placement="top"
-                        title="Delete"
-                      >
-                        <span class="text-500 fas fa-trash-alt"></span>
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="Nombre">Chris</td>
-                    <td class="Apellido1">Hemsworth</td>
-                    <td class="Apellido2">Perez</td>
-                    <td class="Matricula">17112016</td>
-                    <td class="Puesto">Coordinador</td>
-                    <td>
-                      <button
-                        class="btn p-0"
-                        type="button"
-                        data-bs-toggle="modal"
-                        data-bs-target="#error-modal"
-                        title="Edit"
-                        onclick="llenarInput(this)"
-                      >
-                        <span class="text-500 fas fa-edit"></span>
-                      </button>
-                      <button
-                        class="btn p-0 ms-2"
-                        type="button"
-                        data-bs-toggle="tooltip"
-                        data-bs-placement="top"
-                        title="Delete"
-                      >
-                        <span class="text-500 fas fa-trash-alt"></span>
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="Nombre">Cristiano</td>
-                    <td class="Apellido1">Ronaldo</td>
-                    <td class="Apellido2">Perez</td>
-                    <td class="Matricula">17112016</td>
-                    <td class="Puesto">Coordinador</td>
-                    <td>
-                      <button
-                        class="btn p-0"
-                        type="button"
-                        data-bs-toggle="modal"
-                        data-bs-target="#error-modal"
-                        title="Edit"
-                        onclick="llenarInput(this)"
-                      >
-                        <span class="text-500 fas fa-edit"></span>
-                      </button>
-                      <button
-                        class="btn p-0 ms-2"
-                        type="button"
-                        data-bs-toggle="tooltip"
-                        data-bs-placement="top"
-                        title="Delete"
-                      >
-                        <span class="text-500 fas fa-trash-alt"></span>
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="Nombre">Irina</td>
-                    <td class="Apellido1">Shayk</td>
-                    <td class="Apellido2">Perez</td>
-                    <td class="Matricula">17112016</td>
-                    <td class="Puesto">Coordinador</td>
-                    <td>
-                      <button
-                        class="btn p-0"
-                        type="button"
-                        data-bs-toggle="modal"
-                        data-bs-target="#error-modal"
-                        title="Edit"
-                        onclick="llenarInput(this)"
-                      >
-                        <span class="text-500 fas fa-edit"></span>
-                      </button>
-                      <button
-                        class="btn p-0 ms-2"
-                        type="button"
-                        data-bs-toggle="tooltip"
-                        data-bs-placement="top"
-                        title="Delete"
-                      >
-                        <span class="text-500 fas fa-trash-alt"></span>
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="Nombre">Jennifer</td>
-                    <td class="Apellido1">Lawrence</td>
-                    <td class="Apellido2">Perez</td>
-                    <td class="Matricula">17112016</td>
-                    <td class="Puesto">Coordinador</td>
-                    <td>
-                      <button
-                        class="btn p-0"
-                        type="button"
-                        data-bs-toggle="modal"
-                        data-bs-target="#error-modal"
-                        title="Edit"
-                        onclick="llenarInput(this)"
-                      >
-                        <span class="text-500 fas fa-edit"></span>
-                      </button>
-                      <button
-                        class="btn p-0 ms-2"
-                        type="button"
-                        data-bs-toggle="tooltip"
-                        data-bs-placement="top"
-                        title="Delete"
-                      >
-                        <span class="text-500 fas fa-trash-alt"></span>
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="Nombre">Adriana</td>
-                    <td class="Apellido1">Lima</td>
-                    <td class="Apellido2">Perez</td>
-                    <td class="Matricula">17112016</td>
-                    <td class="Puesto">Coordinador</td>
-                    <td>
-                      <button
-                        class="btn p-0"
-                        type="button"
-                        data-bs-toggle="modal"
-                        data-bs-target="#error-modal"
-                        title="Edit"
-                        onclick="llenarInput(this)"
-                      >
-                        <span class="text-500 fas fa-edit"></span>
-                      </button>
-                      <button
-                        class="btn p-0 ms-2"
-                        type="button"
-                        data-bs-toggle="tooltip"
-                        data-bs-placement="top"
-                        title="Delete"
-                      >
-                        <span class="text-500 fas fa-trash-alt"></span>
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="Nombre">Bill</td>
-                    <td class="Apellido1">Gates</td>
-                    <td class="Apellido2">Perez</td>
-                    <td class="Matricula">17112016</td>
-                    <td class="Puesto">Coordinador</td>
-                    <td>
-                      <button
-                        class="btn p-0"
-                        type="button"
-                        data-bs-toggle="modal"
-                        data-bs-target="#error-modal"
-                        title="Edit"
-                        onclick="llenarInput(this)"
-                      >
-                        <span class="text-500 fas fa-edit"></span>
-                      </button>
-                      <button
-                        class="btn p-0 ms-2"
-                        type="button"
-                        data-bs-toggle="tooltip"
-                        data-bs-placement="top"
-                        title="Delete"
-                      >
-                        <span class="text-500 fas fa-trash-alt"></span>
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="Nombre">Camila</td>
-                    <td class="Apellido1">Mendes</td>
-                    <td class="Apellido2">Perez</td>
-                    <td class="Matricula">17112016</td>
-                    <td class="Puesto">Coordinador</td>
-                    <td>
-                      <button
-                        class="btn p-0"
-                        type="button"
-                        data-bs-toggle="modal"
-                        data-bs-target="#error-modal"
-                        title="Edit"
-                        onclick="llenarInput(this)"
-                      >
-                        <span class="text-500 fas fa-edit"></span>
-                      </button>
-                      <button
-                        class="btn p-0 ms-2"
-                        type="button"
-                        data-bs-toggle="tooltip"
-                        data-bs-placement="top"
-                        title="Delete"
-                      >
-                        <span class="text-500 fas fa-trash-alt"></span>
-                      </button>
-                    </td>
-                  </tr>
+                  {%for i in data%}
+                    <tr>
+                      <td class="Id" style="display:none;">{{i.id}}</td>
+                      <td class="Nombre">{{i.nombre}}</td>
+                      <td class="Apellido1">{{i.apellido_paterno}}</td>
+                      <td class="Apellido2">{{i.apellido_materno}}</td>
+                      <td class="Matricula">{{i.matricula}}</td>
+                      
+                      <td class="Puesto">{{i.puesto}}</td>
+                      <td class="Creado">{{i.creado}}</td>
+                      <td class="Actualizado">{{i.actualizado}}</td>
+                      <td>
+                        <button
+                          class="btn p-0"
+                          id = {{i.id}}
+                          type="button"
+                          data-bs-toggle="modal"
+                          data-bs-target="#edit-modal"
+                          title="Edit"
+                          onclick="llenarDatos(this)"
+                        >
+                          <span class="text-500 fas fa-edit"></span>
+                        </button>
+                        <button
+                          class="btn p-0 ms-2"
+                          type="button"
+                          data-bs-toggle="tooltip"
+                          data-bs-placement="top"
+                          title="Delete"
+                        >
+                          <span class="text-500 fas fa-trash-alt"></span>
+                        </button>
+                      </td>
+                    </tr>
+                  {%endfor%}
+
+                  
                 </tbody>
               </table>
             </div>
@@ -645,7 +241,7 @@
           </div>
         </div>
       </div>
-      <!-- Modal -->
+      <!-- Modal agregar-->
       <div
         class="modal fade"
         id="error-modal"
@@ -668,15 +264,23 @@
             </div>
             <div class="modal-body p-0">
               <div class="rounded-top-lg py-3 ps-4 pe-6 bg-light">
-                <h4 class="mb-1" id="modalExampleDemoLabel">Editar Empleado</h4>
+                <h4 class="mb-1" id="modalExampleDemoLabel">Agregar empleado</h4>
               </div>
               <div class="p-4 pb-0">
-                <form>
+                <form
+                  action="{{ url_for('createempleado') }}"
+                  method="post"
+                >
                   <div class="mb-3">
                     <label class="col-form-label" for="inputName"
                       >Nombre:</label
                     >
-                    <input class="form-control" id="inputName" type="text" />
+                    <input
+                      class="form-control"
+                      name="nombre"
+                      id="inputName"
+                      type="text"
+                    />
                   </div>
                   <div class="mb-3">
                     <label class="col-form-label" for="inputApellido1"
@@ -686,6 +290,7 @@
                       class="form-control"
                       id="inputApellido1"
                       type="text"
+                      name="apaterno"
                     />
                   </div>
                   <div class="mb-3">
@@ -696,6 +301,7 @@
                       class="form-control"
                       id="inputApellido2"
                       type="text"
+                      name="amaterno"
                     />
                   </div>
                   <div class="mb-3">
@@ -706,24 +312,33 @@
                       class="form-control"
                       id="inputMatricula"
                       type="text"
+                      name="matricula"
                     />
                   </div>
                   <div class="mb-3">
                     <label class="col-form-label" for="selectPuesto"
                       >Puesto:</label
                     >
-                    <select
+                    <!-- <select
                       id="selectPuesto"
                       class="form-select"
                       aria-label="Default select example"
+                      name="puesto"
                     >
                       <option selected="">Puesto</option>
+                      
                       <option value="1">One</option>
                       <option value="2">Two</option>
                       <option value="3">Three</option>
-                    </select>
+                    </select> -->
+                    <input
+                      id="selectPuesto"
+                      class="form-control"
+                      type="text"
+                      name="puesto"
+                    />
                   </div>
-                </form>
+               
               </div>
             </div>
             <div class="modal-footer">
@@ -734,12 +349,136 @@
               >
                 Cancelar
               </button>
-              <button class="btn btn-primary" type="button">Guardar</button>
+              <button class="btn btn-primary" type="submit">Guardar</button>
+            </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- fin modal agregar-->
+      <!-- Modal de editar -->
+      
+      <div
+        class="modal fade"
+        id="edit-modal"
+        tabindex="-1"
+        role="dialog"
+        aria-hidden="true"
+      >
+        <div
+          class="modal-dialog modal-dialog-centered"
+          role="document"
+          style="max-width: 500px"
+        >
+          <div class="modal-content position-relative">
+            <div class="position-absolute top-0 end-0 mt-2 me-2 z-index-1">
+              <button
+                class="btn-close btn btn-sm btn-circle d-flex flex-center transition-base"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body p-0">
+              <div class="rounded-top-lg py-3 ps-4 pe-6 bg-light">
+                <h4 class="mb-1" id="modalExampleDemoLabel">Editar empleado</h4>
+              </div>
+              <div class="p-4 pb-0">
+                <form
+                  action="{{ url_for('updateEmpleado') }}"
+                  method="post"
+                >
+                    <input
+                    class="form-control"
+                    name="id"
+                    id="idEmpleado"
+                    type="text"
+                  />
+                  <div class="mb-3">
+                    <label class="col-form-label" for="inputName"
+                      >Nombre:</label
+                    >
+                    <input
+                      class="form-control"
+                      name="nombre"
+                      id="inputName-edit"
+                      type="text"
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label class="col-form-label" for="inputApellido1"
+                      >Apellido Paterno:</label
+                    >
+                    <input
+                      class="form-control"
+                      id="inputApellido1-edit"
+                      type="text"
+                      name="apaterno"
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label class="col-form-label" for="inputApellido2"
+                      >Apellido Materno:</label
+                    >
+                    <input
+                      class="form-control"
+                      id="inputApellido2-edit"
+                      type="text"
+                      name="amaterno"
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label class="col-form-label" for="inputMatricula"
+                      >Matricula:</label
+                    >
+                    <input
+                      class="form-control"
+                      id="inputMatricula-edit"
+                      type="text"
+                      name="matricula"
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label class="col-form-label" for="selectPuesto"
+                      >Puesto:</label
+                    >
+                    <!-- <select
+                      id="selectPuesto"
+                      class="form-select"
+                      aria-label="Default select example"
+                      name="puesto"
+                    >
+                      <option selected="">Puesto</option>
+                      
+                      <option value="1">One</option>
+                      <option value="2">Two</option>
+                      <option value="3">Three</option>
+                    </select> -->
+                    <input
+                      id="selectPuesto-edit"
+                      class="form-control"
+                      type="text"
+                      name="puesto"
+                    />
+                  </div>
+               
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                class="btn btn-secondary"
+                type="button"
+                data-bs-dismiss="modal"
+              >
+                Cancelar
+              </button>
+              <button id="enviar-edit" class="btn btn-primary" type="submit">Guardar</button>
+            </form>
             </div>
           </div>
         </div>
       </div>
       <!-- fin modal -->
+      <!-- fin de Modal de editar -->
       <script src="{{ url_for('static', filename='vendors/popper/popper.min.js') }}"></script>
       <script src="{{ url_for('static', filename='vendors/bootstrap/bootstrap.min.js') }}"></script>
       <script src="{{ url_for('static', filename='vendors/anchorjs/anchor.min.js') }}"></script>
@@ -751,6 +490,8 @@
 
       <script src="{{ url_for('static', filename='vendors/list.js/list.min.js') }}"></script>
       <script src="{{ url_for('static', filename='assets/js/theme.js') }}"></script>
+      <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="{{ url_for('static', filename='scripts/llenarDatos.js') }}"></script>
     </main>
   </body>
 </html>
