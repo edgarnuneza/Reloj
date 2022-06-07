@@ -62,6 +62,10 @@ def generate():
             yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' +
                 bytearray(encodedImage) + b'\r\n')
 
+@app.route("/empleados")
+def empleados():
+    return render_template("vision.html")
+
 @app.route("/")
 def index():
     return render_template("login.html")
@@ -79,7 +83,6 @@ def movimiento():
 def video_feed():
     return Response(generate(),
         mimetype = "multipart/x-mixed-replace; boundary=frame")
-
 
 @app.route("/capturador/<empleadoId>")
 def capturador(empleadoId):
@@ -150,7 +153,6 @@ def hello():
         return jsonify(isCaptured = True)
     else:
         return jsonify(isCaptured = False)
-
 
 @app.route('/api/countcaptura')
 def countCaptura():

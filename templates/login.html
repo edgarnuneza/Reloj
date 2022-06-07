@@ -119,62 +119,60 @@
                     <h5>Log in</h5>
                   </div>
                 </div>
-                <form>
-                  <div class="mb-3">
-                    <input
-                      class="form-control"
-                      type="email"
-                      placeholder="Usuario"
-                    />
-                  </div>
-                  <div class="mb-3">
-                    <input
-                      class="form-control"
-                      type="password"
-                      placeholder="Password"
-                    />
-                  </div>
-                  <div class="row flex-between-center">
-                    <div class="col-auto">
-                      <div class="form-check mb-0">
-                        <input
-                          class="form-check-input"
-                          type="checkbox"
-                          id="basic-checkbox"
-                          checked="checked"
-                          style="display: none"
-                        />
-                      </div>
+
+                <div class="mb-3">
+                  <input
+                    class="form-control"
+                    type="text"
+                    placeholder="Usuario"
+                  />
+                </div>
+                <div class="mb-3">
+                  <input
+                    class="form-control"
+                    type="password"
+                    placeholder="Password"
+                  />
+                </div>
+                <div class="row flex-between-center">
+                  <div class="col-auto">
+                    <div class="form-check mb-0">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        id="basic-checkbox"
+                        checked="checked"
+                        style="display: none"
+                      />
                     </div>
-                    <div class="col-auto"></div>
                   </div>
-                  <div class="mb-3">
-                    <button
-                      class="btn btn-primary d-block w-100 mt-3"
-                      type="submit"
-                      name="submit"
+                  <div class="col-auto"></div>
+                </div>
+                <div class="mb-3">
+                  <button
+                    class="btn btn-primary d-block w-100 mt-3"
+                    type="submit"
+                    name="submit"
+                  >
+                    <a style="color: white" href="{{ url_for('empleados') }}"
+                      >Ingresar</a
                     >
-                      <a
-                        style="color: white"
-                        href="{{ url_for( 'movimiento') }}"
-                        >Registrar Movimiento</a
-                      >
-                    </button>
-                  </div>
-                  <div class="mb-3">
-                    <button
-                      class="btn btn-primary d-block w-100 mt-3"
-                      type="button"
-                      name="submit"
+                  </button>
+                </div>
+                <div class="mb-3">
+                  <button
+                    class="btn btn-primary d-block w-100 mt-3"
+                    type="button"
+                    name="submit"
+                  >
+                    <a
+                      style="color: white"
+                      href="{{ url_for( 'reconocerPersona') }}"
+                      >Registrar Movimiento</a
                     >
-                      <a
-                        style="color: white"
-                        href="{{ url_for( 'reconocerPersona') }}"
-                        >Registrar Movimiento</a
-                      >
-                    </button>
-                  </div>
-                </form>
+                  </button>
+                </div>
+
                 <div class="position-relative mt-4"></div>
               </div>
             </div>

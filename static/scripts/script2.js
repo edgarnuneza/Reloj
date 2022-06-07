@@ -1,17 +1,17 @@
-let rostroPersona;
+// let rostroPersona;
 
-comprobacion = setInterval(comprobarCaptura, 500);
+// comprobacion = setInterval(comprobarCaptura, 500);
 
-function comprobarCaptura() {
-  axios.get("http://127.0.0.1:5000/rostroPersona").then((res) => {
-    rostroPersona = res.data.rostro;
-  });
+// function comprobarCaptura() {
+//   axios.get("http://127.0.0.1:5000/rostroPersona").then((res) => {
+//     rostroPersona = res.data.rostro;
+//   });
 
-  if (rostroPersona) {
-    clearInterval(comprobacion);
-    document.querySelector("#nombre").innerHTML = rostroPersona;
-  }
-}
+//   if (rostroPersona) {
+//     clearInterval(comprobacion);
+//     document.querySelector("#nombre").innerHTML = rostroPersona;
+//   }
+// }
 
 let today = new Date();
 let dd = String(today.getDate()).padStart(2, "0");
@@ -24,4 +24,7 @@ min = min < 10 ? "0" + min : min;
 
 today = `${dd}/${mm}/${yyyy} ${hour}:${min}`;
 
-document.querySelector("#tiempo").innerHTML = today;
+//document.querySelector("#tiempo").innerHTML = today;
+
+document.querySelector("#tiempo").innerHTML = "01/06/2022 21:32";
+document.querySelector("#nombre").innerHTML = "Chris Evans";
