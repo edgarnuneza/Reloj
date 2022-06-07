@@ -16,6 +16,11 @@ from types import coroutine
 from ReconocedorRostros.capturador import Capturador
 from Controllers.empleadoController import EmpleadoController
 
+#Librerias emociones
+from prepare_training_data import prepare_training_data
+import numpy as np
+from predict import predict
+
 app = Flask(__name__)
 
 cap = cv2.VideoCapture(2)
@@ -138,9 +143,14 @@ def identificarRostro(results):
     
     if rostroFinal == 'Desconocido':
         imagenMostrar = cv2.imread('./Data/desconocido.jpg')
+
+    emotion_recognizer = cv2.face.LBPHFaceRecognizer_create()
+    emotion_recognizer.read("modeloLBPH.xml")
+
+    predicted_img2 = predict(imagenMostrar, emotion_recognizer)
     
-    rostroPersona = rostroFinal
-    (flag, encodedImage) = cv2.imencode(".jpg", imagenMostrar)
+    # rostroPersona = rostroFinal
+    (flag, encodedImage) = cv2.imencode(".jpg", predicted_img2)
     yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' +
     bytearray(encodedImage) + b'\r\n')
 
