@@ -9,8 +9,9 @@ from functools import total_ordering
 import pickle
 from types import coroutine
 from Controllers.empleadoController import EmpleadoController
+from Controllers.movimientoController import MovimientoController
 from flask import request
-from Model.model import Empleado
+from Model.model import Empleado, Movimiento
 import datetime
 
 app = Flask(__name__)
@@ -44,8 +45,6 @@ def updateEmpleado():
 
     return redirect(url_for('empleados'))
 
-
-
 @app.route("/empleados")
 def empleados():
     controlador = EmpleadoController()
@@ -59,7 +58,6 @@ def movimiento():
 @app.route("/reconocerPersona")
 def reconocerPersona():
     return "hola"
-
 
 @app.route('/createempleado', methods = ['POST'])
 def createempleado():
@@ -79,6 +77,27 @@ def createempleado():
 
     return render_template('vision.html')
 
+
+
+@app.route('/deleteempleado', methods = ['POST'])
+def deleteempleado():
+    
+    controlador = EmpleadoController()
+
+    if request.method == 'POST':
+        data = request.json
+        print(data)
+        controlador.eliminar(data.get('id'))
+
+    return redirect(url_for('empleados'))
+
+@app.route('/verMovimientos/<idEmpleado>')
+def verMovimientos(idEmpleado):
+    movimientoController = MovimientoController()
+
+    movimientos = movimientoController.getAll()
+
+    return render_template("Movimientos.html", data=movimientos)
 
 
 if __name__ == "__main__":

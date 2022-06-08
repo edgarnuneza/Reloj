@@ -61,15 +61,15 @@ class MovimientoController:
         
         return movimiento
 
-movimiento1 = Movimiento()
-movimiento1.id = 1
-movimiento1.id_empleado = 'dfb836a1-d7e8-11ec-a474-c1f31a9a582d'
-movimiento1.tipo_movimiento = "entrada"
-movimiento1.tiempo = datetime.datetime.now()
+# movimiento1 = Movimiento()
+# movimiento1.id = 1
+# movimiento1.id_empleado = 'dfb836a1-d7e8-11ec-a474-c1f31a9a582d'
+# movimiento1.tipo_movimiento = "entrada"
+# movimiento1.tiempo = datetime.datetime.now()
 
-c = MovimientoController()
+# c = MovimientoController()
 
-try:
-    c.actualizar(movimiento1)
-except Exception as e:
-    print(e)
+# try:
+#     c.actualizar(movimiento1)
+# except Exception as e:
+#     print(e)

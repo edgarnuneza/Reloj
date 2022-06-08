@@ -9,6 +9,9 @@ import threading
 import copy
 from collections import Counter
 import uuid
+from prepare_training_data import prepare_training_data
+import numpy as np
+from predict import predict
 
 __name__ = "__main__"
 
@@ -17,7 +20,7 @@ def grabar():
     detector = cv2.CascadeClassifier("./Data/Reconocimiento/haarcascade_frontalface_default.xml")
 
     r = Reconocedor(data, detector)
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(2)
     
     if not cap.isOpened():
         print("Cannot open camera")
@@ -65,7 +68,7 @@ def identificarRostro(results):
             contadorRostros[results[i][0]] = contadorRostros.get(results[i][0]) + 1
 
     rostroFinal = max(contadorRostros, key=contadorRostros.get)
-    print(type(rostroFinal))
+    print(rostroFinal)
     
     imagenMostrar = None
 
@@ -79,7 +82,16 @@ def identificarRostro(results):
 
     cv2.imshow('frame', imagenMostrar)
     cv2.waitKey(0)
+    emocion(imagenMostrar)
 
+def emocion(imagen):
+    print("hola")
+    emotion_recognizer = cv2.face.LBPHFaceRecognizer_create()
+    emotion_recognizer.read("modeloLBPH.xml")
+    predicted_img2 = predict(imagen, emotion_recognizer)
+
+    cv2.imshow('frame2' ,predicted_img2)
+    cv2.waitKey(0)
 
 if __name__ == '__main__':
     grabar()

@@ -207,10 +207,16 @@
                           type="button"
                           data-bs-toggle="tooltip"
                           data-bs-placement="top"
+                          id = "botonB"
                           title="Delete"
+                          value = {{i.id}}
+                          onclick="borrarDatos(this)"
                         >
                           <span class="text-500 fas fa-trash-alt"></span>
                         </button>
+                        
+                         <a href="{{ url_for( 'verMovimientos', idEmpleado=i.id) }}"><span class="text-500 fas fa-trash-alt"></span></a>
+                        
                       </td>
                     </tr>
                   {%endfor%}

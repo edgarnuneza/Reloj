@@ -3,7 +3,8 @@ import cv2
 
 def detect_face(img):
     #Convierta la imagen en una imagen en escala de grises, porque el detector facial OpenCV necesita una imagen en escala de grises
-    gray = cv2.cvtColor(img, cv2.COLOR_BAYER_BG2GRAY)
+
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
     # Cargue el reconocedor de rostros OpenCV, tenga en cuenta que la ruta aquí es la ubicación que guardó cuando descargó el reconocedor
     face_cascade = cv2.CascadeClassifier(r'lbpcascade_frontalface.xml')
@@ -22,3 +23,7 @@ def detect_face(img):
     #Volver al rostro y su zona
     return gray[y:y + w, x:x + h], faces[0]
 
+# frame = cv2.imread('./cr7.jpeg')
+# face, rect = detect_face(frame)
+# cv2.imshow('Imagen convertida a grises',face)
+# cv2.waitKey(0)

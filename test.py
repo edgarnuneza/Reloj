@@ -15,6 +15,11 @@ import pickle
 from types import coroutine
 from ReconocedorRostros.capturador import Capturador
 from Controllers.empleadoController import EmpleadoController
+from Controllers.movimientoController import MovimientoController
+from Model.model import Empleado, Movimiento
+from flask import request
+import datetime
+
 
 #Librerias emociones
 from prepare_training_data import prepare_training_data
@@ -66,10 +71,6 @@ def generate():
                 continue
             yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' +
                 bytearray(encodedImage) + b'\r\n')
-
-@app.route("/empleados")
-def empleados():
-    return render_template("vision.html")
 
 @app.route("/")
 def index():
@@ -147,6 +148,9 @@ def identificarRostro(results):
     emotion_recognizer = cv2.face.LBPHFaceRecognizer_create()
     emotion_recognizer.read("modeloLBPH.xml")
 
+    cv2.imshow('imagen', imagenMostrar)
+    cv2.waitKey(0)
+
     predicted_img2 = predict(imagenMostrar, emotion_recognizer)
     
     # rostroPersona = rostroFinal
@@ -185,6 +189,78 @@ def foto(empleadoId):
     else:
         return render_template('capturar.html', data=empleadoId)
     
+
+@app.route("/getEmpleado/<idEmpleado>")
+def getEmpleado(idEmpleado):
+    controlador = EmpleadoController()
+    empleado = controlador.get(idEmpleado)
+
+    return jsonify(id = empleado.id, nombre = empleado.nombre, apaterno = empleado.apellido_paterno, amaterno = empleado.apellido_materno, matricula = empleado.matricula, datosCapturados = empleado.datosCapturados, puesto = empleado.puesto, creado = empleado.creado, actualizado = empleado.actualizado)
+
+@app.route("/updateEmpleado", methods = ['POST', 'GET'])
+def updateEmpleado():
+    controlador = EmpleadoController()
+    empleadoUpdate = Empleado()
+
+    if request.method == 'POST':
+        empleadoUpdate.id = request.form['id']
+        empleadoUpdate.nombre = request.form['nombre']
+        empleadoUpdate.apellido_paterno = request.form['apaterno']
+        empleadoUpdate.apellido_materno = request.form['amaterno']
+        empleadoUpdate.matricula = request.form['matricula']
+        empleadoUpdate.puesto = request.form['puesto']
+
+        # datafromjs = request.form['mydata']
+        controlador.actualizar(empleadoUpdate)
+
+    return redirect(url_for('empleados'))
+
+
+
+@app.route("/empleados")
+def empleados():
+    controlador = EmpleadoController()
+    datos = controlador.getAll()
+    return render_template("vision.html", data= datos)
+
+@app.route('/createempleado', methods = ['POST'])
+def createempleado():
+    controlador = EmpleadoController()
+    empleadoAgregar = Empleado()
+    if request.method == 'POST':
+        empleadoAgregar.nombre = request.form['nombre']
+        empleadoAgregar.apellido_paterno = request.form['apaterno']
+        empleadoAgregar.apellido_materno = request.form['amaterno']
+        empleadoAgregar.matricula = request.form['matricula']
+        empleadoAgregar.puesto = request.form['puesto']
+        empleadoAgregar.creado = datetime.datetime.now()
+        empleadoAgregar.actualizado = datetime.datetime.now()
+
+        # datafromjs = request.form['mydata']
+        controlador.agregar(empleadoAgregar)
+
+    return render_template('vision.html')
+
+@app.route('/deleteempleado', methods = ['POST'])
+def deleteempleado():
+    
+    controlador = EmpleadoController()
+
+    if request.method == 'POST':
+        data = request.json
+        print(data)
+        controlador.eliminar(data.get('id'))
+
+    return redirect(url_for('empleados'))
+
+@app.route('/verMovimientos/<idEmpleado>')
+def verMovimientos(idEmpleado):
+    movimientoController = MovimientoController()
+
+    movimientos = movimientoController.getAll()
+
+    return render_template("Movimientos.html", data=movimientos)
+
 def reiniciar():
     global totalFotos 
     global count

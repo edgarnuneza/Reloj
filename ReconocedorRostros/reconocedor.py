@@ -72,13 +72,13 @@ class Reconocedor:
             names.append(name)
 
         # loop over the recognized faces
-        for ((top, right, bottom, left), name) in zip(boxes, names):
-            # draw the predicted face name on the image
-            cv2.rectangle(image, (left, top), (right, bottom),
-                (83, 175, 70), 2)
-            y = top - 15 if top - 15 > 15 else top + 15
-            cv2.putText(image, name, (left, y), cv2.FONT_HERSHEY_SIMPLEX,
-                0.75, (83, 175, 70), 2)
+        # for ((top, right, bottom, left), name) in zip(boxes, names):
+        #     # draw the predicted face name on the image
+        #     cv2.rectangle(image, (left, top), (right, bottom),
+        #         (83, 175, 70), 2)
+        #     y = top - 15 if top - 15 > 15 else top + 15
+        #     cv2.putText(image, name, (left, y), cv2.FONT_HERSHEY_SIMPLEX,
+        #         0.75, (83, 175, 70), 2)
 
         # display the image to our screen
         # cv2.imshow("image", image)
