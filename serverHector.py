@@ -95,10 +95,9 @@ def deleteempleado():
 def verMovimientos(idEmpleado):
     movimientoController = MovimientoController()
 
-    movimientos = movimientoController.getAll()
-
+    movimientos = movimientoController.getMovimientoFiltrado(idEmpleado)
     return render_template("Movimientos.html", data=movimientos)
-
+    
 
 if __name__ == "__main__":
      app.run(debug=True)

@@ -60,7 +60,13 @@ class MovimientoController:
             raise Exception("No se encontro el movimiento")
         
         return movimiento
+    def getAll():
+        movimientos = session.query(Movimiento).all()
+        return movimientos
+    def getMovimientoFiltrado(seld,id):
 
+        movimientoFiltrado=session.query(Movimiento).filter(Movimiento.id_empleado == id).all()
+        return movimientoFiltrado
 # movimiento1 = Movimiento()
 # movimiento1.id = 1
 # movimiento1.id_empleado = 'dfb836a1-d7e8-11ec-a474-c1f31a9a582d'
