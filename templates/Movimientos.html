@@ -156,16 +156,19 @@
         <div class="row"><h1 class="font-base mb-3">Movimientos</h1></div>
 
         <div class="row">
+          <!-- registro=movEmpleado(e.idya,e.nombreya,e.apellido_paterno,e.apellido_materno,m.tipo_movimiento,m.tiempo,m.creado,m.actualizado) -->
           <div
             id="tableExample2"
-            data-list='{"valueNames":["Id","Id_empleado","Tipo_movimiento","Tiempo","Creado","Actualizado"],"page":10,"pagination":true}'
+            data-list='{"valueNames":["Id","nombreEmpleado","apaterno","amaterno","Tipo_movimiento","Tiempo","Creado","Actualizado"],"page":10,"pagination":true}'
           >
             <div class="table-responsive scrollbar border border-facebook">
               <table class="table table-bordered table-striped fs--1 mb-0">
                 <thead class="bg-200 text-900">
                   <tr>
                     <th class="sort" data-sort="Id">Id</th>
-                    <th class="sort" data-sort="Id_empleado">Id_empleado</th>
+                    <th class="sort" data-sort="nombreEmpleado">Nombre</th>
+                    <th class="sort" data-sort="apaterno">Apellido paterno</th>
+                    <th class="sort" data-sort="amaterno">Apellido materno</th>
                     <th class="sort" data-sort="Tipo_movimiento">
                       Tipo de Movimiento
                     </th>
@@ -179,9 +182,12 @@
                 <tbody class="list">
                   {%for i in data%}
                   <tr>
-                    <td class="Id">{{i.id}}</td>
-                    <td class="Id_empleado">{{i.id_empleado}}</td>
-                    <td class="Tipo_movimiento">{{i.tipo_movimiento}}</td>
+                    <!-- registro=movEmpleado(e.id,e.nombre,e.apellido_paterno,e.apellido_materno,m.tipo_movimiento,m.tiempo,m.creado,m.actualizado) -->
+                    <td class="Id">{{i.idEmpleado}}</td>
+                    <td class="nombreEmpleado">{{i.nombreEmpleado}}</td>
+                    <td class="apaterno">{{i.ApellidoPaterno}}</td>
+                    <td class="amaterno">{{i.ApellidoMaterno}}</td>
+                    <td class="Tipo_movimiento">{{i.tipoMovimiento}}</td>
                     <td class="Tiempo">{{i.tiempo}}</td>
                     <td class="Creado">{{i.creado}}</td>
                     <td class="Actualizado">{{i.actualizado}}</td>

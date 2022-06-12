@@ -1,6 +1,8 @@
 import sys, os
+from Model.model import Empleado
 sys.path.insert(0, os.path.abspath(os.getcwd()) + '/Model')
-from model import Movimiento, session
+from Model.model import Movimiento,session
+from Model.movimientoEmpleado import movEmpleado
 import datetime
 import uuid
 
@@ -64,9 +66,20 @@ class MovimientoController:
         movimientos = session.query(Movimiento).all()
         return movimientos
     def getMovimientoFiltrado(seld,id):
-
-        movimientoFiltrado=session.query(Movimiento).filter(Movimiento.id_empleado == id).all()
-        return movimientoFiltrado
+        movimientoFiltrado=[]
+        listaRegistros=[]
+        
+        for m, e in session.query(Movimiento, Empleado).filter(Movimiento.id_empleado == Empleado.id).filter(Empleado.id==id):
+            #print ("ID: {} Name: {} Invoice No: {} Amount: {}".format(c.id,c.name, i.invno, i.amount))
+            #print("El nombre es "+e.nombre,"El apellido es "+e.apellido_paterno,"El movimiento es "+m.tipo_movimiento)
+            #def __init__(self,nombre,apaterno,amaterno,tipoMovimiento,tiempo,creado,actualizado):
+            registro=movEmpleado(e.id,e.nombre,e.apellido_paterno,e.apellido_materno,m.tipo_movimiento,m.tiempo,m.creado,m.actualizado)
+            listaRegistros.append(registro)
+        
+        #movimientoFiltrado=session.query(Movimiento).filter(Movimiento.id_empleado == id).all()
+        #print(type(movimientoFiltrado))
+        
+        return listaRegistros
 # movimiento1 = Movimiento()
 # movimiento1.id = 1
 # movimiento1.id_empleado = 'dfb836a1-d7e8-11ec-a474-c1f31a9a582d'
