@@ -8,7 +8,6 @@ class Capturador:
 		self.identificador = identificador
 		self.dataPath = "./Data/FotosEntrenamiento"
 		self.completePath = self.dataPath + "/" + identificador
-		self.crearCarpeta()
 		self.count = 0
 		self.limite = 300
 		self.detener = False
@@ -17,15 +16,21 @@ class Capturador:
 		if self.identificador == '':
 			return False
 
+		if os.path.exists(self.completePath):
+			shutil.rmtree(self.completePath)
+
 		if not os.path.exists(self.completePath):
 			os.makedirs(self.completePath)
 			return True
 		
 	def capturar(self):
+		self.completePath = self.dataPath + "/" + self.identificador
+		self.crearCarpeta()
+
 		if self.identificador == '':
 			return False
 
-		cap = cv2.VideoCapture(2)
+		cap = cv2.VideoCapture(0)
 		
 		faceClassif = cv2.CascadeClassifier(cv2.data.haarcascades+'haarcascade_frontalface_default.xml')
 		self.count = 0
@@ -63,6 +68,7 @@ class Capturador:
 			# if k == 27 or self.count >= self.limite:
 			# 	break
 
+		self.detener = True
 		cap.release()
 		#cv2.destroyAllWindows()
 
@@ -70,6 +76,8 @@ class Capturador:
 			shutil.rmtree(self.completePath)
 			return False
 
+
+		self.count = 0
 		return True
 
 # c = Capturador('edgar')

@@ -1,5 +1,5 @@
 function llenarDatos(empleado) {
-  axios.get("http://127.0.0.1:5000/getEmpleado/" + empleado.id).then((res) => {
+  axios.get("/getEmpleado/" + empleado.id).then((res) => {
     document.querySelector("#idEmpleado").value = empleado.id;
     document.querySelector("#inputName-edit").value = res.data.nombre;
     document.querySelector("#inputApellido1-edit").value = res.data.apaterno;

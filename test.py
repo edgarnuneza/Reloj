@@ -28,7 +28,7 @@ from predict import predict
 
 app = Flask(__name__)
 
-cap = cv2.VideoCapture(2)
+cap = cv2.VideoCapture(0)
 
 data = pickle.loads(open("./Data/Reconocimiento/pr_encodings.pkl", "rb").read())
 detector = cv2.CascadeClassifier("./Data/Reconocimiento/haarcascade_frontalface_default.xml")
@@ -145,16 +145,16 @@ def identificarRostro(results):
     if rostroFinal == 'Desconocido':
         imagenMostrar = cv2.imread('./Data/desconocido.jpg')
 
-    emotion_recognizer = cv2.face.LBPHFaceRecognizer_create()
-    emotion_recognizer.read("modeloLBPH.xml")
+    # emotion_recognizer = cv2.face.LBPHFaceRecognizer_create()
+    # emotion_recognizer.read("modeloLBPH.xml")
 
-    cv2.imshow('imagen', imagenMostrar)
-    cv2.waitKey(0)
+    # cv2.imshow('imagen', imagenMostrar)
+    # cv2.waitKey(0)
 
-    predicted_img2 = predict(imagenMostrar, emotion_recognizer)
+    # predicted_img2 = predict(imagenMostrar, emotion_recognizer)
     
     # rostroPersona = rostroFinal
-    (flag, encodedImage) = cv2.imencode(".jpg", predicted_img2)
+    (flag, encodedImage) = cv2.imencode(".jpg", imagenMostrar)
     yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' +
     bytearray(encodedImage) + b'\r\n')
 
@@ -172,13 +172,16 @@ def hello():
 def countCaptura():
     global c
 
-    return jsonify(detener = c.detener)
+    return jsonify(detener = c.detener, total = c.count)
 
 @app.route('/foto/<empleadoId>')
 def foto(empleadoId):
+    global c
     empleadoC = EmpleadoController()
-
+    
     try:
+        c.identificador = empleadoId
+        c.detener = False
         empleadoEntrenar = empleadoC.get(empleadoId)
     except Exception as e:
         empleadoId = None
@@ -189,7 +192,6 @@ def foto(empleadoId):
     else:
         return render_template('capturar.html', data=empleadoId)
     
-
 @app.route("/getEmpleado/<idEmpleado>")
 def getEmpleado(idEmpleado):
     controlador = EmpleadoController()
@@ -239,7 +241,7 @@ def createempleado():
         # datafromjs = request.form['mydata']
         controlador.agregar(empleadoAgregar)
 
-    return render_template('vision.html')
+    return redirect(url_for('empleados'))
 
 @app.route('/deleteempleado', methods = ['POST'])
 def deleteempleado():
