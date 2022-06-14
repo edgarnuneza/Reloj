@@ -45,6 +45,7 @@ totalFotos = 15
 count = 0
 results = []
 idEmpleado = ''
+empleadoActual = Empleado()
 
 @app.route("/generate")
 def generate():
@@ -151,6 +152,8 @@ def identificarRostro(results):
     
     if rostroFinal == 'Desconocido':
         imagenMostrar = cv2.imread('./Data/desconocido.jpg')
+    else:
+        crearEmpleado(rostroFinal)
 
     # emotion_recognizer = cv2.face.LBPHFaceRecognizer_create()
     # emotion_recognizer.read("modeloLBPH.xml")
@@ -224,8 +227,6 @@ def updateEmpleado():
 
     return redirect(url_for('empleados'))
 
-
-
 @app.route("/empleados")
 def empleados():
     global cap
@@ -294,7 +295,11 @@ def iniciarCamara():
         print("Cannot open camera")
         exit()
 
-    
+def crearEmpleado(id):
+    global empleadoActual
+
+    controlador = EmpleadoController()
+    empleadoActual = controlador.get(id)
 
 if __name__ == "__main__":
      app.run(debug=False)
