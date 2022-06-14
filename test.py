@@ -28,17 +28,18 @@ from predict import predict
 
 app = Flask(__name__)
 
-cap = cv2.VideoCapture(0)
+numeroCamara = 2
+cap = cv2.VideoCapture(numeroCamara)
+
+if not cap.isOpened():
+    print("Cannot open camera")
+    exit()
 
 data = pickle.loads(open("./Data/Reconocimiento/pr_encodings.pkl", "rb").read())
 detector = cv2.CascadeClassifier("./Data/Reconocimiento/haarcascade_frontalface_default.xml")
 r = Reconocedor(data, detector)
 c = Capturador()
 rostroPersona = ''
-
-if not cap.isOpened():
-    print("Cannot open camera")
-    exit()
 
 totalFotos = 15
 count = 0
@@ -51,6 +52,7 @@ def generate():
     global results
     global totalFotos
 
+    iniciarCamara()
     while True:
         ret, frame = cap.read()
         if not ret:
@@ -74,6 +76,7 @@ def generate():
 
 @app.route("/")
 def index():
+    cap.release()
     return render_template("login.html")
 
 @app.route("/reconocerPersona")
@@ -102,7 +105,11 @@ def capturador(empleadoId):
 
 @app.route("/registro")
 def registro():
+    global cap
     global rostroPersona
+
+    cap.release()
+
     return render_template("registro.html", data=rostroPersona)
 
 @app.route("/getRostroIdentificado")
@@ -221,6 +228,8 @@ def updateEmpleado():
 
 @app.route("/empleados")
 def empleados():
+    global cap
+    cap.release()
     controlador = EmpleadoController()
     datos = controlador.getAll()
     return render_template("vision.html", data= datos)
@@ -255,12 +264,13 @@ def deleteempleado():
 
     return redirect(url_for('empleados'))
 
+
 @app.route('/verMovimientos/<idEmpleado>')
 def verMovimientos(idEmpleado):
+    cap.release()
     movimientoController = MovimientoController()
 
-    movimientos = movimientoController.getAll()
-
+    movimientos = movimientoController.getMovimientoFiltrado(idEmpleado)
     return render_template("Movimientos.html", data=movimientos)
 
 def reiniciar():
@@ -275,6 +285,16 @@ def reiniciar():
     results = []
     idEmpleado = ''
     redireccionar = True
+
+def iniciarCamara():
+    global cap
+    cap = cv2.VideoCapture(numeroCamara)
+
+    if not cap.isOpened():
+        print("Cannot open camera")
+        exit()
+
+    
 
 if __name__ == "__main__":
      app.run(debug=False)

@@ -27,4 +27,4 @@ today = `${dd}/${mm}/${yyyy} ${hour}:${min}`;
 //document.querySelector("#tiempo").innerHTML = today;
 
 document.querySelector("#tiempo").innerHTML = "01/06/2022 21:32";
-document.querySelector("#nombre").innerHTML = "Chris Evans";
+// document.querySelector("#nombre").innerHTML = "Chris Evans";
