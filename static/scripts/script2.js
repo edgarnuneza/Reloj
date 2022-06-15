@@ -1,18 +1,4 @@
-// let rostroPersona;
-
-// comprobacion = setInterval(comprobarCaptura, 500);
-
-// function comprobarCaptura() {
-//   axios.get("http://127.0.0.1:5000/rostroPersona").then((res) => {
-//     rostroPersona = res.data.rostro;
-//   });
-
-//   if (rostroPersona) {
-//     clearInterval(comprobacion);
-//     document.querySelector("#nombre").innerHTML = rostroPersona;
-//   }
-// }
-
+let empleado;
 let today = new Date();
 let dd = String(today.getDate()).padStart(2, "0");
 let mm = String(today.getMonth() + 1).padStart(2, "0");
@@ -26,5 +12,38 @@ today = `${dd}/${mm}/${yyyy} ${hour}:${min}`;
 
 //document.querySelector("#tiempo").innerHTML = today;
 
-document.querySelector("#tiempo").innerHTML = "01/06/2022 21:32";
+
 // document.querySelector("#nombre").innerHTML = "Chris Evans";
+
+axios.get("/api/empleadoactual").then((res) => {
+    empleado = res.data;
+    document.querySelector("#nombre").innerHTML = empleado.nombre;
+    document.querySelector("#tiempo").innerHTML = today;
+});
+
+const btnEntrada = document.querySelector("#entrada");
+const btnSalida = document.querySelector("#salida");
+
+btnEntrada.addEventListener('click', () => {
+    if(empleado.id !== null)
+    {
+        axios.post("/registrarmovimiento", {
+            id_empleado:  empleado.id, 
+            tipo: 'Entrada'
+        }).then(() => {
+            window.location.href = "/verMovimientos/" + empleado.id;
+        });
+    }
+});
+
+btnSalida.addEventListener('click', () => {
+    if(empleado.id !== null)
+    {
+        axios.post("/registrarmovimiento", {
+            id_empleado:  empleado.id, 
+            tipo: 'Salida'
+        }).then(() => {
+            window.location.href = "/verMovimientos/" + empleado.id;
+        });
+    }
+});

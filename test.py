@@ -28,7 +28,7 @@ from predict import predict
 
 app = Flask(__name__)
 
-numeroCamara = 2
+numeroCamara = 0
 cap = cv2.VideoCapture(numeroCamara)
 
 if not cap.isOpened():
@@ -260,10 +260,15 @@ def deleteempleado():
 
     if request.method == 'POST':
         data = request.json
-        print(data)
         controlador.eliminar(data.get('id'))
 
     return redirect(url_for('empleados'))
+
+@app.route('/api/empleadoactual')
+def empleadoactual():
+    global empleadoActual
+
+    return jsonify(id = empleadoActual.id, nombre = empleadoActual.nombre, apaterno = empleadoActual.apellido_paterno, amaterno = empleadoActual.apellido_materno, matricula = empleadoActual.matricula, datosCapturados = empleadoActual.datosCapturados, puesto = empleadoActual.puesto, creado = empleadoActual.creado, actualizado = empleadoActual.actualizado)
 
 
 @app.route('/verMovimientos/<idEmpleado>')
@@ -274,18 +279,36 @@ def verMovimientos(idEmpleado):
     movimientos = movimientoController.getMovimientoFiltrado(idEmpleado)
     return render_template("Movimientos.html", data=movimientos)
 
+@app.route('/registrarmovimiento', methods = ['POST'])
+def registrarMovimiento():
+    controladorMovimiento = MovimientoController()
+    movimiento = Movimiento()
+
+    if request.method == 'POST':
+        data = request.json
+        print(data)
+        movimiento.id_empleado = data.get('id_empleado')
+        movimiento.tipo_movimiento = data.get('tipo')
+        movimiento.tiempo= datetime.datetime.now()
+        movimiento.creado = datetime.datetime.now()
+        controladorMovimiento.agregar(movimiento)
+
+    return redirect(url_for('verMovimientos', idEmpleado = data.get('id_empleado')))
+
 def reiniciar():
     global totalFotos 
     global count
     global results 
     global idEmpleado 
     global redireccionar
+    global empleadoActual
 
     totalFotos = 15
     count = 0
     results = []
     idEmpleado = ''
     redireccionar = True
+    empleadoActual = Empleado()
 
 def iniciarCamara():
     global cap
@@ -297,7 +320,7 @@ def iniciarCamara():
 
 def crearEmpleado(id):
     global empleadoActual
-
+    id = '9a5e24faea9611ec9b93'
     controlador = EmpleadoController()
     empleadoActual = controlador.get(id)
 

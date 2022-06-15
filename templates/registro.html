@@ -163,7 +163,7 @@
           <div class="col">
             <h4>
               Nombre:
-              <small id="nombre" class="text-muted"> {{ data }}</small>
+              <small id="nombre" class="text-muted"></small>
             </h4>
             <h4>
               Tiempo:
@@ -171,19 +171,11 @@
                 </small
               >
             </h4>
-            <button class="btn btn-primary me-1 mb-1" type="button">
-              <a
-                      style="color: white"
-                      href="{{ url_for( 'movimiento') }}"
-                      >Entrada</a
-                    >
+            <button id="entrada" class="btn btn-primary me-1 mb-1" type="button">
+              Entrada
             </button>
-            <button class="btn btn-secondary me-1 mb-1" type="button">
-              <a
-                      style="color: white"
-                      href="{{ url_for( 'movimiento') }}"
-                      >Salida</a
-                    >
+            <button id="salida" class="btn btn-secondary me-1 mb-1" type="button">
+              Salida
             </button>
           </div>
         </div>

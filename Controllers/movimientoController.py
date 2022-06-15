@@ -11,6 +11,7 @@ class MovimientoController:
         pass
 
     def agregar(self, newMovimiento):
+        print(newMovimiento)
         try:
             if not newMovimiento.id_empleado or not newMovimiento.tipo_movimiento or not newMovimiento.tiempo:
                 raise Exception("Hay campos vacíos")

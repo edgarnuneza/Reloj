@@ -11,13 +11,7 @@ function llenarDatos(empleado) {
 
 function borrarDatos(event) {
   axios.post("/deleteempleado", {
-    //id: event.previousElementSibling.id,
     id: event.value,
   });
 }
 
-// document
-//   .getElementById("enviar-edit")
-//   .addEventListener("click", function (event) {
-//     event.preventDefault();
-//   });
