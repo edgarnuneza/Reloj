@@ -1,8 +1,8 @@
 import sys, os
-from Model.model import Empleado
 sys.path.insert(0, os.path.abspath(os.getcwd()) + '/Model')
-from Model.model import Movimiento,session
-from Model.movimientoEmpleado import movEmpleado
+from model import Movimiento,session
+from movimientoEmpleado import movEmpleado
+from model import Empleado
 import datetime
 import uuid
 
@@ -81,14 +81,22 @@ class MovimientoController:
         #print(type(movimientoFiltrado))
         
         return listaRegistros
+
+    def eliminarMovimientosEmpleado(self, id_empleado):
+        movimientos = session.query(Movimiento).filter(Movimiento.id_empleado == id_empleado).all()
+
+        for movimiento in movimientos:
+            session.delete(movimiento)
+            session.commit()
+
 # movimiento1 = Movimiento()
 # movimiento1.id = 1
 # movimiento1.id_empleado = 'dfb836a1-d7e8-11ec-a474-c1f31a9a582d'
 # movimiento1.tipo_movimiento = "entrada"
 # movimiento1.tiempo = datetime.datetime.now()
 
-# c = MovimientoController()
-
+c = MovimientoController()
+c.eliminarMovimientosEmpleado('1ab6dcc2-e066-11ec-915d-7b2980412ef8')
 # try:
 #     c.actualizar(movimiento1)
 # except Exception as e:

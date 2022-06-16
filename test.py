@@ -20,7 +20,6 @@ from Model.model import Empleado, Movimiento
 from flask import request
 import datetime
 
-
 #Librerias emociones
 from prepare_training_data import prepare_training_data
 import numpy as np
@@ -28,7 +27,7 @@ from predict import predict
 
 app = Flask(__name__)
 
-numeroCamara = 0
+numeroCamara = 2
 cap = cv2.VideoCapture(numeroCamara)
 
 if not cap.isOpened():
@@ -257,9 +256,10 @@ def createempleado():
 def deleteempleado():
     
     controlador = EmpleadoController()
-
+    movController = MovimientoController()
     if request.method == 'POST':
         data = request.json
+        movController.eliminarMovimientosEmpleado(data.get('id'))
         controlador.eliminar(data.get('id'))
 
     return redirect(url_for('empleados'))

@@ -30,7 +30,7 @@ class Capturador:
 		if self.identificador == '':
 			return False
 
-		cap = cv2.VideoCapture(0)
+		cap = cv2.VideoCapture(2)
 		
 		faceClassif = cv2.CascadeClassifier(cv2.data.haarcascades+'haarcascade_frontalface_default.xml')
 		self.count = 0
