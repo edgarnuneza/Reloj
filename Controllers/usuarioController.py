@@ -69,5 +69,13 @@ class UsuarioController:
         
         return perfil
     
+    def getUser(self, username):
+        usuario = session.query(Usuario).get(username)
+
+        if usuario == None:
+            raise Exception("No se encontro el usuario")
+        
+        return usuario
+
     def checkPassword(self, idUsuario, passwordToCheck):
         pass
