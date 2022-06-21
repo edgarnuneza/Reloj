@@ -27,12 +27,10 @@ import datetime
 from prepare_training_data import prepare_training_data
 import numpy as np
 from predict import predict
-from flask.ext.session import Session
+from flask import Flask, session 
 
 app = Flask(__name__)
-SESSION_TYPE = 'redis'
-app.config.from_object(__name__)
-Session(app)
+app.secret_key = 'hector'
 
 numeroCamara = 2
 cap = cv2.VideoCapture(numeroCamara)
@@ -55,36 +53,43 @@ empleadoActual = Empleado()
 
 @app.route("/generate")
 def generate():
-    global count
-    global results
-    global totalFotos
+    if isLogged() == False:
+        return redirect(url_for('index'))
+    else:
+        
+        global count
+        global results
+        global totalFotos
 
-    iniciarCamara()
-    while True:
-        ret, frame = cap.read()
-        if not ret:
-            print("Can't receive frame (stream end?). Exiting ...")
-            break
+        iniciarCamara()
+        while True:
+            ret, frame = cap.read()
+            if not ret:
+                print("Can't receive frame (stream end?). Exiting ...")
+                break
 
-        if count <= totalFotos:
-            isFace, img = r.identificarRostro(copy.copy(frame))
-            if isFace:
-                
-                x = threading.Thread(target=r.reconocer(frame, results))
-                x.start()
-                frame = img
-                count = count + 1
+            if count <= totalFotos:
+                isFace, img = r.identificarRostro(copy.copy(frame))
+                if isFace:
+                    
+                    x = threading.Thread(target=r.reconocer(frame, results))
+                    x.start()
+                    frame = img
+                    count = count + 1
 
-            (flag, encodedImage) = cv2.imencode(".jpg", frame)
-            if not flag:
-                continue
-            yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' +
-                bytearray(encodedImage) + b'\r\n')
+                (flag, encodedImage) = cv2.imencode(".jpg", frame)
+                if not flag:
+                    continue
+                yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' +
+                    bytearray(encodedImage) + b'\r\n')
 
 @app.route("/")
 def index():
-    cap.release()
-    return render_template("login.html")
+    if isLogged() == False:
+        cap.release()
+        return render_template("login.html")
+    else:
+        return redirect(url_for('empleados'))
 
 def validation(user, password):
     import psycopg2    
@@ -98,65 +103,99 @@ def validation(user, password):
             return True
     return False
 
+def isLogged():
+    name = session.get('usuario', 'not set')
+    if name != 'not set':
+        return True
+    else:
+        return False
+
 @app.route("/do_login", methods=["POST"])
 def do_login():
     if request.method == 'POST':
         user = request.form["user"]
         password = request.form["password"]
-    if validation(user, password):
-        session["usuario"] = user
-        return redirect("/empleados")
+        if validation(user, password):
+            session["usuario"] = user
+            return redirect(url_for('empleados'))
     else: 
-        return redirect("/login")
+        # return redirect("/login")
+        return redirect(url_for('index'))
 
 @app.route("/reconocerPersona")
 def reconocerPersona():
-    reiniciar()
-    return render_template("Grabando.html")
+    if isLogged() == False:
+        return redirect(url_for('index'))
+    else:
+        return render_template("Grabando.html")
 
 @app.route("/movimiento")
 def movimiento():
-    return render_template("Movimientos.html")
+    if isLogged() == False:
+        return redirect(url_for('index'))
+    else:
+        return render_template("Movimientos.html")
 
 @app.route("/video_feed")
 def video_feed():
-    return Response(generate(),
-        mimetype = "multipart/x-mixed-replace; boundary=frame")
+    if isLogged() == False:
+        return redirect(url_for('index'))
+    else:
+        return Response(generate(),
+            mimetype = "multipart/x-mixed-replace; boundary=frame")
 
 @app.route("/capturador/<empleadoId>")
 def capturador(empleadoId):
-    global cap
-    global c
-    cap.release()
-    c.identificador = empleadoId
-    
-    return Response(c.capturar(), 
-        mimetype = "multipart/x-mixed-replace; boundary=frame")
+    if isLogged() == False:
+        return redirect(url_for('index'))
+    else:
+        global cap
+        global c
+        cap.release()
+        c.identificador = empleadoId
+        
+        return Response(c.capturar(), 
+            mimetype = "multipart/x-mixed-replace; boundary=frame")
+
+@app.route("/deleteCookies")
+def deleteCookies():
+    session.clear()
+    return redirect(url_for('index'))
+
 
 @app.route("/registro")
 def registro():
-    global cap
-    global rostroPersona
+    if isLogged() == False:
+        return redirect(url_for('index'))
+    else:
+        global cap
+        global rostroPersona
 
-    cap.release()
+        cap.release()
 
-    return render_template("registro.html", data=rostroPersona)
+        return render_template("registro.html", data=rostroPersona)
 
 @app.route("/getRostroIdentificado")
 def getRostroIdentificado():
-    global results
-    return Response(identificarRostro(results),
-        mimetype = "multipart/x-mixed-replace; boundary=frame")
+    if isLogged() == False:
+        return redirect(url_for('index'))
+    else:
+        global results
+        return Response(identificarRostro(results),
+            mimetype = "multipart/x-mixed-replace; boundary=frame")
 
 @app.route('/rostroPersona')
 def getRostro():
-    global rostroPersona
+    if isLogged() == False:
+        return redirect(url_for('index'))
+    else:
+        global rostroPersona
 
-    if rostroPersona == '':
-        return jsonify(rostro = False)
-    else: 
-        rostroPersona = rostroPersona.capitalize()
-        return jsonify(rostro = rostroPersona)
+        if rostroPersona == '':
+            return jsonify(rostro = False)
+        else: 
+            rostroPersona = rostroPersona.capitalize()
+            return jsonify(rostro = rostroPersona)
 
 def identificarRostro(results):
     global rostroPersona
@@ -199,131 +238,164 @@ def identificarRostro(results):
 
 @app.route('/api/count')
 def hello():
-    global totalFotos
-    global count
-
-    if count > totalFotos:
-        return jsonify(isCaptured = True)
+    if isLogged() == False:
+        return redirect(url_for('index'))
     else:
-        return jsonify(isCaptured = False)
+        global totalFotos
+        global count
+
+        if count > totalFotos:
+            return jsonify(isCaptured = True)
+        else:
+            return jsonify(isCaptured = False)
 
 @app.route('/api/countcaptura')
 def countCaptura():
-    global c
+    if isLogged() == False:
+        return redirect(url_for('index'))
+    else:
+        global c
 
-    return jsonify(detener = c.detener, total = c.count)
+        return jsonify(detener = c.detener, total = c.count)
 
 @app.route('/foto/<empleadoId>')
 def foto(empleadoId):
-    global c
-    empleadoC = EmpleadoController()
-    
-    try:
-        c.identificador = empleadoId
-        c.detener = False
-        empleadoEntrenar = empleadoC.get(empleadoId)
-    except Exception as e:
-        empleadoId = None
-        print(e)
-        
-    if empleadoId == None:
-        return "No funciono la busqueda de ID"
+    if isLogged() == False:
+        return redirect(url_for('index'))
     else:
-        return render_template('capturar.html', data=empleadoId)
-    
+        global c
+        empleadoC = EmpleadoController()
+        
+        try:
+            c.identificador = empleadoId
+            c.detener = False
+            empleadoEntrenar = empleadoC.get(empleadoId)
+        except Exception as e:
+            empleadoId = None
+            print(e)
+            
+        if empleadoId == None:
+            return "No funciono la busqueda de ID"
+        else:
+            return render_template('capturar.html', data=empleadoId)
+        
 @app.route("/getEmpleado/<idEmpleado>")
 def getEmpleado(idEmpleado):
-    controlador = EmpleadoController()
-    empleado = controlador.get(idEmpleado)
+    if isLogged() == False:
+        return redirect(url_for('index'))
+    else:
+        controlador = EmpleadoController()
+        empleado = controlador.get(idEmpleado)
 
-    return jsonify(id = empleado.id, nombre = empleado.nombre, apaterno = empleado.apellido_paterno, amaterno = empleado.apellido_materno, matricula = empleado.matricula, datosCapturados = empleado.datosCapturados, puesto = empleado.puesto, creado = empleado.creado, actualizado = empleado.actualizado)
+        return jsonify(id = empleado.id, nombre = empleado.nombre, apaterno = empleado.apellido_paterno, amaterno = empleado.apellido_materno, matricula = empleado.matricula, datosCapturados = empleado.datosCapturados, puesto = empleado.puesto, creado = empleado.creado, actualizado = empleado.actualizado)
 
 @app.route("/updateEmpleado", methods = ['POST', 'GET'])
 def updateEmpleado():
-    controlador = EmpleadoController()
-    empleadoUpdate = Empleado()
+    if isLogged() == False:
+        return redirect(url_for('index'))
+    else:
+        controlador = EmpleadoController()
+        empleadoUpdate = Empleado()
 
-    if request.method == 'POST':
-        empleadoUpdate.id = request.form['id']
-        empleadoUpdate.nombre = request.form['nombre']
-        empleadoUpdate.apellido_paterno = request.form['apaterno']
-        empleadoUpdate.apellido_materno = request.form['amaterno']
-        empleadoUpdate.matricula = request.form['matricula']
-        empleadoUpdate.puesto = request.form['puesto']
+        if request.method == 'POST':
+            empleadoUpdate.id = request.form['id']
+            empleadoUpdate.nombre = request.form['nombre']
+            empleadoUpdate.apellido_paterno = request.form['apaterno']
+            empleadoUpdate.apellido_materno = request.form['amaterno']
+            empleadoUpdate.matricula = request.form['matricula']
+            empleadoUpdate.puesto = request.form['puesto']
 
-        # datafromjs = request.form['mydata']
-        controlador.actualizar(empleadoUpdate)
+            # datafromjs = request.form['mydata']
+            controlador.actualizar(empleadoUpdate)
 
-    return redirect(url_for('empleados'))
+        return redirect(url_for('empleados'))
 
 @app.route("/empleados")
 def empleados():
-    global cap
-    cap.release()
-    controlador = EmpleadoController()
-    datos = controlador.getAll()
-    return render_template("vision.html", data= datos)
+    if isLogged() == False:
+        return redirect(url_for('index'))
+    else:
+        global cap
+        cap.release()
+        controlador = EmpleadoController()
+        datos = controlador.getAll()
+        return render_template("vision.html", data= datos)
 
 @app.route('/createempleado', methods = ['POST'])
 def createempleado():
-    controlador = EmpleadoController()
-    empleadoAgregar = Empleado()
-    if request.method == 'POST':
-        empleadoAgregar.nombre = request.form['nombre']
-        empleadoAgregar.apellido_paterno = request.form['apaterno']
-        empleadoAgregar.apellido_materno = request.form['amaterno']
-        empleadoAgregar.matricula = request.form['matricula']
-        empleadoAgregar.puesto = request.form['puesto']
-        empleadoAgregar.creado = datetime.datetime.now()
-        empleadoAgregar.actualizado = datetime.datetime.now()
+    if isLogged() == False:
+        return redirect(url_for('index'))
+    else:
+        controlador = EmpleadoController()
+        empleadoAgregar = Empleado()
+        if request.method == 'POST':
+            empleadoAgregar.nombre = request.form['nombre']
+            empleadoAgregar.apellido_paterno = request.form['apaterno']
+            empleadoAgregar.apellido_materno = request.form['amaterno']
+            empleadoAgregar.matricula = request.form['matricula']
+            empleadoAgregar.puesto = request.form['puesto']
+            empleadoAgregar.creado = datetime.datetime.now()
+            empleadoAgregar.actualizado = datetime.datetime.now()
 
-        # datafromjs = request.form['mydata']
-        controlador.agregar(empleadoAgregar)
+            # datafromjs = request.form['mydata']
+            controlador.agregar(empleadoAgregar)
 
-    return redirect(url_for('empleados'))
+        return redirect(url_for('empleados'))
 
 @app.route('/deleteempleado', methods = ['POST'])
 def deleteempleado():
-    
-    controlador = EmpleadoController()
-    movController = MovimientoController()
-    if request.method == 'POST':
-        data = request.json
-        movController.eliminarMovimientosEmpleado(data.get('id'))
-        controlador.eliminar(data.get('id'))
+    if isLogged() == False:
+        return redirect(url_for('index'))
+    else:
+        
+        controlador = EmpleadoController()
+        movController = MovimientoController()
+        if request.method == 'POST':
+            data = request.json
+            movController.eliminarMovimientosEmpleado(data.get('id'))
+            controlador.eliminar(data.get('id'))
 
-    return redirect(url_for('empleados'))
+        return redirect(url_for('empleados'))
 
 @app.route('/api/empleadoactual')
 def empleadoactual():
-    global empleadoActual
+    if isLogged() == False:
+        return redirect(url_for('index'))
+    else:
+        global empleadoActual
 
-    return jsonify(id = empleadoActual.id, nombre = empleadoActual.nombre, apaterno = empleadoActual.apellido_paterno, amaterno = empleadoActual.apellido_materno, matricula = empleadoActual.matricula, datosCapturados = empleadoActual.datosCapturados, puesto = empleadoActual.puesto, creado = empleadoActual.creado, actualizado = empleadoActual.actualizado)
+        return jsonify(id = empleadoActual.id, nombre = empleadoActual.nombre, apaterno = empleadoActual.apellido_paterno, amaterno = empleadoActual.apellido_materno, matricula = empleadoActual.matricula, datosCapturados = empleadoActual.datosCapturados, puesto = empleadoActual.puesto, creado = empleadoActual.creado, actualizado = empleadoActual.actualizado)
 
 
 @app.route('/verMovimientos/<idEmpleado>')
 def verMovimientos(idEmpleado):
-    cap.release()
-    movimientoController = MovimientoController()
+    if isLogged() == False:
+        return redirect(url_for('index'))
+    else:
+        cap.release()
+        movimientoController = MovimientoController()
 
-    movimientos = movimientoController.getMovimientoFiltrado(idEmpleado)
-    return render_template("Movimientos.html", data=movimientos)
+        movimientos = movimientoController.getMovimientoFiltrado(idEmpleado)
+        return render_template("Movimientos.html", data=movimientos)
 
 @app.route('/registrarmovimiento', methods = ['POST'])
 def registrarMovimiento():
-    controladorMovimiento = MovimientoController()
-    movimiento = Movimiento()
+    if isLogged() == False:
+        return redirect(url_for('index'))
+    else:
+        controladorMovimiento = MovimientoController()
+        movimiento = Movimiento()
 
-    if request.method == 'POST':
-        data = request.json
-        print(data)
-        movimiento.id_empleado = data.get('id_empleado')
-        movimiento.tipo_movimiento = data.get('tipo')
-        movimiento.tiempo= datetime.datetime.now()
-        movimiento.creado = datetime.datetime.now()
-        controladorMovimiento.agregar(movimiento)
+        if request.method == 'POST':
+            data = request.json
+            print(data)
+            movimiento.id_empleado = data.get('id_empleado')
+            movimiento.tipo_movimiento = data.get('tipo')
+            movimiento.tiempo= datetime.datetime.now()
+            movimiento.creado = datetime.datetime.now()
+            controladorMovimiento.agregar(movimiento)
 
-    return redirect(url_for('verMovimientos', idEmpleado = data.get('id_empleado')))
+        return redirect(url_for('verMovimientos', idEmpleado = data.get('id_empleado')))
 
 def reiniciar():
     global totalFotos 
