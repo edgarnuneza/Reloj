@@ -8,6 +8,7 @@ import pickle
 import time
 import cv2
 import platform
+
 from numpy import rec
 
 class Reconocedor:
@@ -34,7 +35,7 @@ class Reconocedor:
         # need to do a bit of reordering
         boxes = [(y, x + w, y + h, x) for (x, y, w, h) in rects]
 
-        # Se obtienen las 128 medidas del rostro
+        # compute the facial embeddings for each face bounding box
         encodings = face_recognition.face_encodings(rgb, boxes)
         names = []
         name = ''
