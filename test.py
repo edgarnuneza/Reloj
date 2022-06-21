@@ -2,7 +2,7 @@ from contextlib import redirect_stderr
 from unittest import result
 from flask import Flask, redirect, url_for, jsonify
 from flask import render_template
-from flask import Response
+from flask import Response, session
 import cv2
 from ReconocedorRostros.reconocedor import Reconocedor
 from imutils.video import VideoStream
@@ -11,6 +11,9 @@ import copy
 from collections import Counter
 from email.mime import image
 from functools import total_ordering
+from flask import Flask, session
+
+
 import pickle
 from types import coroutine
 from ReconocedorRostros.capturador import Capturador
@@ -24,8 +27,12 @@ import datetime
 from prepare_training_data import prepare_training_data
 import numpy as np
 from predict import predict
+from flask.ext.session import Session
 
 app = Flask(__name__)
+SESSION_TYPE = 'redis'
+app.config.from_object(__name__)
+Session(app)
 
 numeroCamara = 2
 cap = cv2.VideoCapture(numeroCamara)
@@ -78,6 +85,29 @@ def generate():
 def index():
     cap.release()
     return render_template("login.html")
+
+def validation(user, password):
+    import psycopg2    
+    conexion1 = psycopg2.connect(database="reloj", user="edgar", password="123")
+    cursor1=conexion1.cursor()
+    cursor1.execute("select * from Usuario")
+    lista = list(cursor1)
+    conexion1.close()
+    for fila in lista:
+        if fila[1] == user and fila[2]== password:
+            return True
+    return False
+
+@app.route("/do_login", methods=["POST"])
+def do_login():
+    if request.method == 'POST':
+        user = request.form["user"]
+        password = request.form["password"]
+    if validation(user, password):
+        session["usuario"] = user
+        return redirect("/empleados")
+    else: 
+        return redirect("/login")
 
 @app.route("/reconocerPersona")
 def reconocerPersona():
