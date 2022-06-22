@@ -21,7 +21,7 @@ class EmpleadoController:
             existeMatricula = session.query(Empleado).filter(Empleado.matricula == newEmpleado.matricula).first()
 
             if existeMatricula:
-                raise Exception("El campo debe ser único")
+                raise Exception("El campo de la matrícula debe ser único")
 
             session.add(newEmpleado)
             session.commit()

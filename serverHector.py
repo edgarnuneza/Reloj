@@ -72,10 +72,12 @@ def createempleado():
         empleadoAgregar.creado = datetime.datetime.now()
         empleadoAgregar.actualizado = datetime.datetime.now()
 
+    try:
         # datafromjs = request.form['mydata']
         controlador.agregar(empleadoAgregar)
-
-    return render_template('vision.html')
+        return render_template('vision.html')
+    except Exception as e:
+        return render_template('vision.html', error=e)
 
 
 
