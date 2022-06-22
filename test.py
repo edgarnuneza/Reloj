@@ -32,14 +32,14 @@ from flask import Flask, session
 app = Flask(__name__)
 app.secret_key = 'hector'
 
-numeroCamara = 2
+numeroCamara = 0
 cap = cv2.VideoCapture(numeroCamara)
 
 if not cap.isOpened():
     print("Cannot open camera")
     exit()
 
-data = pickle.loads(open("./Data/Reconocimiento/pr_encodings.pkl", "rb").read())
+data = pickle.loads(open("./Data/Reconocimiento/pr_encodings2.pkl", "rb").read())
 detector = cv2.CascadeClassifier("./Data/Reconocimiento/haarcascade_frontalface_default.xml")
 r = Reconocedor(data, detector)
 c = Capturador()
@@ -319,6 +319,7 @@ def empleados():
         cap.release()
         controlador = EmpleadoController()
         datos = controlador.getAll()
+        datos = datos[::-1]
         return render_template("vision.html", data= datos)
 
 @app.route('/createempleado', methods = ['POST'])
@@ -422,7 +423,7 @@ def iniciarCamara():
 
 def crearEmpleado(id):
     global empleadoActual
-    id = '9a5e24faea9611ec9b93'
+    
     controlador = EmpleadoController()
     empleadoActual = controlador.get(id)
 
