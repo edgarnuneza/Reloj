@@ -5,7 +5,11 @@ import argparse
 import pickle
 import cv2
 import os
-
+ 
+  
+  
+  
+#
 #/home/hector/Escritorio/Reloj/ReconocedorRostros/encode_faces.py
 # construct the argument parser and parse the arguments
 ap = argparse.ArgumentParser()
