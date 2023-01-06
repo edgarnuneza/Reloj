@@ -13,7 +13,6 @@ from email.mime import image
 from functools import total_ordering
 from flask import Flask, session
 
-
 import pickle
 from types import coroutine
 from ReconocedorRostros.capturador import Capturador
@@ -23,11 +22,11 @@ from Model.model import Empleado, Movimiento
 from flask import request
 import datetime
 
-#Librerias emociones
+# Librerias emociones
 from prepare_training_data import prepare_training_data
 import numpy as np
 from predict import predict
-from flask import Flask, session 
+from flask import Flask, session
 
 app = Flask(__name__)
 app.secret_key = 'hector'
@@ -39,8 +38,10 @@ if not cap.isOpened():
     print("Cannot open camera")
     exit()
 
-data = pickle.loads(open("./Data/Reconocimiento/pr_encodings2.pkl", "rb").read())
-detector = cv2.CascadeClassifier("./Data/Reconocimiento/haarcascade_frontalface_default.xml")
+data = pickle.loads(
+    open("./Data/Reconocimiento/pr_encodings.pkl", "rb").read())
+detector = cv2.CascadeClassifier(
+    "./Data/Reconocimiento/haarcascade_frontalface_default.xml")
 r = Reconocedor(data, detector)
 c = Capturador()
 rostroPersona = ''
@@ -51,12 +52,13 @@ results = []
 idEmpleado = ''
 empleadoActual = Empleado()
 
+
 @app.route("/generate")
 def generate():
     if isLogged() == False:
         return redirect(url_for('index'))
     else:
-        
+
         global count
         global results
         global totalFotos
@@ -71,7 +73,7 @@ def generate():
             if count <= totalFotos:
                 isFace, img = r.identificarRostro(copy.copy(frame))
                 if isFace:
-                    
+
                     x = threading.Thread(target=r.reconocer(frame, results))
                     x.start()
                     frame = img
@@ -80,8 +82,9 @@ def generate():
                 (flag, encodedImage) = cv2.imencode(".jpg", frame)
                 if not flag:
                     continue
-                yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' +
-                    bytearray(encodedImage) + b'\r\n')
+                yield (b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' +
+                       bytearray(encodedImage) + b'\r\n')
+
 
 @app.route("/")
 def index():
@@ -91,36 +94,44 @@ def index():
     else:
         return redirect(url_for('empleados'))
 
+
 def validation(user, password):
-    import psycopg2    
-    conexion1 = psycopg2.connect(database="reloj", user="edgar", password="123")
-    cursor1=conexion1.cursor()
+    import psycopg2
+    conexion1 = psycopg2.connect(
+        database="reloj", user="edgar", password="123")
+    cursor1 = conexion1.cursor()
     cursor1.execute("select * from Usuario")
     lista = list(cursor1)
     conexion1.close()
     for fila in lista:
-        if fila[1] == user and fila[2]== password:
+        if fila[1] == user and fila[2] == password:
             return True
     return False
 
+
 def isLogged():
-    name = session.get('usuario', 'not set')
-    if name != 'not set':
-        return True
-    else:
-        return False
+    # name = session.get('usuario', 'not set')
+    # if name != 'not set':
+    #     return True
+    # else:
+    #     return False
+    return True
+
 
 @app.route("/do_login", methods=["POST"])
 def do_login():
-    if request.method == 'POST':
-        user = request.form["user"]
-        password = request.form["password"]
-        if validation(user, password):
-            session["usuario"] = user
-            return redirect(url_for('empleados'))
-    else: 
-        # return redirect("/login")
-        return redirect(url_for('index'))
+    return redirect(url_for('empleados'))
+
+    # if request.method == 'POST':
+    #     user = request.form["user"]
+    #     password = request.form["password"]
+    #     if validation(user, password):
+    #         session["usuario"] = user
+    #         return redirect(url_for('empleados'))
+    # else:
+    #     # return redirect("/login")
+    #     return redirect(url_for('index'))
+
 
 @app.route("/reconocerPersona")
 def reconocerPersona():
@@ -129,6 +140,7 @@ def reconocerPersona():
     else:
         return render_template("Grabando.html")
 
+
 @app.route("/movimiento")
 def movimiento():
     if isLogged() == False:
@@ -136,13 +148,15 @@ def movimiento():
     else:
         return render_template("Movimientos.html")
 
+
 @app.route("/video_feed")
 def video_feed():
     if isLogged() == False:
         return redirect(url_for('index'))
     else:
         return Response(generate(),
-            mimetype = "multipart/x-mixed-replace; boundary=frame")
+                        mimetype="multipart/x-mixed-replace; boundary=frame")
+
 
 @app.route("/capturador/<empleadoId>")
 def capturador(empleadoId):
@@ -153,9 +167,10 @@ def capturador(empleadoId):
         global c
         cap.release()
         c.identificador = empleadoId
-        
-        return Response(c.capturar(), 
-            mimetype = "multipart/x-mixed-replace; boundary=frame")
+
+        return Response(c.capturar(),
+                        mimetype="multipart/x-mixed-replace; boundary=frame")
+
 
 @app.route("/deleteCookies")
 def deleteCookies():
@@ -175,6 +190,7 @@ def registro():
 
         return render_template("registro.html", data=rostroPersona)
 
+
 @app.route("/getRostroIdentificado")
 def getRostroIdentificado():
     if isLogged() == False:
@@ -182,7 +198,8 @@ def getRostroIdentificado():
     else:
         global results
         return Response(identificarRostro(results),
-            mimetype = "multipart/x-mixed-replace; boundary=frame")
+                        mimetype="multipart/x-mixed-replace; boundary=frame")
+
 
 @app.route('/rostroPersona')
 def getRostro():
@@ -192,32 +209,34 @@ def getRostro():
         global rostroPersona
 
         if rostroPersona == '':
-            return jsonify(rostro = False)
-        else: 
+            return jsonify(rostro=False)
+        else:
             rostroPersona = rostroPersona.capitalize()
-            return jsonify(rostro = rostroPersona)
+            return jsonify(rostro=rostroPersona)
+
 
 def identificarRostro(results):
     global rostroPersona
     contadorRostros = {}
-    
+
     for i in range(0, len(results)):
 
         if not results[i][0] in contadorRostros:
             contadorRostros[results[i][0]] = 1
         else:
-            contadorRostros[results[i][0]] = contadorRostros.get(results[i][0]) + 1
+            contadorRostros[results[i][0]] = contadorRostros.get(
+                results[i][0]) + 1
 
     rostroFinal = max(contadorRostros, key=contadorRostros.get)
     print(rostroFinal)
-    
+
     imagenMostrar = None
 
     for resultado in reversed(results):
         if resultado[0] == rostroFinal:
             imagenMostrar = resultado[1]
             break
-    
+
     if rostroFinal == 'Desconocido':
         imagenMostrar = cv2.imread('./Data/desconocido.jpg')
     else:
@@ -230,11 +249,12 @@ def identificarRostro(results):
     # cv2.waitKey(0)
 
     # predicted_img2 = predict(imagenMostrar, emotion_recognizer)
-    
+
     # rostroPersona = rostroFinal
     (flag, encodedImage) = cv2.imencode(".jpg", imagenMostrar)
-    yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' +
-    bytearray(encodedImage) + b'\r\n')
+    yield (b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' +
+           bytearray(encodedImage) + b'\r\n')
+
 
 @app.route('/api/count')
 def hello():
@@ -245,9 +265,10 @@ def hello():
         global count
 
         if count > totalFotos:
-            return jsonify(isCaptured = True)
+            return jsonify(isCaptured=True)
         else:
-            return jsonify(isCaptured = False)
+            return jsonify(isCaptured=False)
+
 
 @app.route('/api/countcaptura')
 def countCaptura():
@@ -256,7 +277,8 @@ def countCaptura():
     else:
         global c
 
-        return jsonify(detener = c.detener, total = c.count)
+        return jsonify(detener=c.detener, total=c.count)
+
 
 @app.route('/foto/<empleadoId>')
 def foto(empleadoId):
@@ -265,7 +287,7 @@ def foto(empleadoId):
     else:
         global c
         empleadoC = EmpleadoController()
-        
+
         try:
             c.identificador = empleadoId
             c.detener = False
@@ -273,12 +295,13 @@ def foto(empleadoId):
         except Exception as e:
             empleadoId = None
             print(e)
-            
+
         if empleadoId == None:
             return "No funciono la busqueda de ID"
         else:
             return render_template('capturar.html', data=empleadoId)
-        
+
+
 @app.route("/getEmpleado/<idEmpleado>")
 def getEmpleado(idEmpleado):
     if isLogged() == False:
@@ -287,9 +310,10 @@ def getEmpleado(idEmpleado):
         controlador = EmpleadoController()
         empleado = controlador.get(idEmpleado)
 
-        return jsonify(id = empleado.id, nombre = empleado.nombre, apaterno = empleado.apellido_paterno, amaterno = empleado.apellido_materno, matricula = empleado.matricula, datosCapturados = empleado.datosCapturados, puesto = empleado.puesto, creado = empleado.creado, actualizado = empleado.actualizado)
+        return jsonify(id=empleado.id, nombre=empleado.nombre, apaterno=empleado.apellido_paterno, amaterno=empleado.apellido_materno, matricula=empleado.matricula, datosCapturados=empleado.datosCapturados, puesto=empleado.puesto, creado=empleado.creado, actualizado=empleado.actualizado)
 
-@app.route("/updateEmpleado", methods = ['POST', 'GET'])
+
+@app.route("/updateEmpleado", methods=['POST', 'GET'])
 def updateEmpleado():
     if isLogged() == False:
         return redirect(url_for('index'))
@@ -310,6 +334,7 @@ def updateEmpleado():
 
         return redirect(url_for('empleados'))
 
+
 @app.route("/empleados")
 def empleados():
     if isLogged() == False:
@@ -320,9 +345,10 @@ def empleados():
         controlador = EmpleadoController()
         datos = controlador.getAll()
         datos = datos[::-1]
-        return render_template("vision.html", data= datos)
+        return render_template("vision.html", data=datos)
 
-@app.route('/createempleado', methods = ['POST'])
+
+@app.route('/createempleado', methods=['POST'])
 def createempleado():
     if isLogged() == False:
         return redirect(url_for('index'))
@@ -343,12 +369,13 @@ def createempleado():
 
         return redirect(url_for('empleados'))
 
-@app.route('/deleteempleado', methods = ['POST'])
+
+@app.route('/deleteempleado', methods=['POST'])
 def deleteempleado():
     if isLogged() == False:
         return redirect(url_for('index'))
     else:
-        
+
         controlador = EmpleadoController()
         movController = MovimientoController()
         if request.method == 'POST':
@@ -358,6 +385,7 @@ def deleteempleado():
 
         return redirect(url_for('empleados'))
 
+
 @app.route('/api/empleadoactual')
 def empleadoactual():
     if isLogged() == False:
@@ -365,7 +393,7 @@ def empleadoactual():
     else:
         global empleadoActual
 
-        return jsonify(id = empleadoActual.id, nombre = empleadoActual.nombre, apaterno = empleadoActual.apellido_paterno, amaterno = empleadoActual.apellido_materno, matricula = empleadoActual.matricula, datosCapturados = empleadoActual.datosCapturados, puesto = empleadoActual.puesto, creado = empleadoActual.creado, actualizado = empleadoActual.actualizado)
+        return jsonify(id=empleadoActual.id, nombre=empleadoActual.nombre, apaterno=empleadoActual.apellido_paterno, amaterno=empleadoActual.apellido_materno, matricula=empleadoActual.matricula, datosCapturados=empleadoActual.datosCapturados, puesto=empleadoActual.puesto, creado=empleadoActual.creado, actualizado=empleadoActual.actualizado)
 
 
 @app.route('/verMovimientos/<idEmpleado>')
@@ -379,7 +407,8 @@ def verMovimientos(idEmpleado):
         movimientos = movimientoController.getMovimientoFiltrado(idEmpleado)
         return render_template("Movimientos.html", data=movimientos)
 
-@app.route('/registrarmovimiento', methods = ['POST'])
+
+@app.route('/registrarmovimiento', methods=['POST'])
 def registrarMovimiento():
     if isLogged() == False:
         return redirect(url_for('index'))
@@ -392,17 +421,18 @@ def registrarMovimiento():
             print(data)
             movimiento.id_empleado = data.get('id_empleado')
             movimiento.tipo_movimiento = data.get('tipo')
-            movimiento.tiempo= datetime.datetime.now()
+            movimiento.tiempo = datetime.datetime.now()
             movimiento.creado = datetime.datetime.now()
             controladorMovimiento.agregar(movimiento)
 
-        return redirect(url_for('verMovimientos', idEmpleado = data.get('id_empleado')))
+        return redirect(url_for('verMovimientos', idEmpleado=data.get('id_empleado')))
+
 
 def reiniciar():
-    global totalFotos 
+    global totalFotos
     global count
-    global results 
-    global idEmpleado 
+    global results
+    global idEmpleado
     global redireccionar
     global empleadoActual
 
@@ -413,6 +443,7 @@ def reiniciar():
     redireccionar = True
     empleadoActual = Empleado()
 
+
 def iniciarCamara():
     global cap
     cap = cv2.VideoCapture(numeroCamara)
@@ -421,13 +452,14 @@ def iniciarCamara():
         print("Cannot open camera")
         exit()
 
+
 def crearEmpleado(id):
     global empleadoActual
-    
+
     controlador = EmpleadoController()
     empleadoActual = controlador.get(id)
 
 if __name__ == "__main__":
-     app.run(debug=False)
+    app.run(debug=False)
 
 cap.release()

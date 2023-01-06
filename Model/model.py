@@ -3,8 +3,8 @@ from sqlalchemy import Column, String, Integer, TIMESTAMP, Boolean
 from sqlalchemy.ext.declarative import declarative_base  
 from sqlalchemy.orm import sessionmaker
 
-db_string = "postgresql://postgres:vision@localhost:5432/reloj"
-# db_string = "postgresql://postgres:123@localhost:5432/reloj"
+# db_string = "postgresql://postgres:vision@localhost:5432/reloj"
+db_string = "postgresql://postgres:123@localhost:5432/reloj"
 
 db = create_engine(db_string)  
 base = declarative_base()
