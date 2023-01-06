@@ -9,7 +9,7 @@ import os
   
   
   
-#
+#j
 #/home/hector/Escritorio/Reloj/ReconocedorRostros/encode_faces.py
 # construct the argument parser and parse the arguments
 ap = argparse.ArgumentParser()
