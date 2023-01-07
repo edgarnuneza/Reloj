@@ -40,7 +40,10 @@ class Usuario(base):
     salt = Column(String, nullable=False)
     creado = Column(TIMESTAMP, nullable=False)
     actualizado = Column(TIMESTAMP, nullable=True)
-    
+class Puesto(base):
+    __tablename__ = 'puesto'
+    id = Column(Integer, primary_key=True)
+    nombre = Column(String, nullable=False) 
 class Config(base):
     __tablename__ = 'config'
 

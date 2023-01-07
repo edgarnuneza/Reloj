@@ -7,7 +7,7 @@
     <!-- ===============================================-->
     <!--    Favicons-->
     <!-- ===============================================-->
-
+     
     <link
       rel="apple-touch-icon"
       sizes="180x180"
@@ -328,29 +328,30 @@
                       name="matricula"
                     />
                   </div>
-                  <div class="mb-3">
+                  <!-- <div class="mb-3">
                     <label class="col-form-label" for="selectPuesto"
                       >Puesto:</label
                     >
-                    <!-- <select
-                      id="selectPuesto"
-                      class="form-select"
-                      aria-label="Selecciona un puesto"
-                      name="puesto"
-                    >
-                      <option selected="">Puesto</option>
-                      
-                      <option value="Alumno">Alumno</option>
-                      <option value="Maestro">Maestro</option>
-                    </select> -->
+                    
                     <input
                       id="selectPuesto"
                       class="form-control"
                       type="text"
                       name="puesto"
                     />
-                  </div>
-               
+                  </div> -->
+                  <label for="addPuestos" class="col-form-label" for="puestoSelect"
+                      >Puesto:</label
+                    > 
+                  <select class="form-select" name="puesto" id="addPuestos" aria-label="Default select example">
+                    <!-- <option selected="4">Open this select menu</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option> -->
+                    {%for i in puestos%}
+                    <option value={{i.id}}>{{i.nombre}}</option>
+                    {%endfor%}
+                  </select>
               </div>
             </div>
             <div class="modal-footer">
@@ -450,27 +451,28 @@
                     />
                   </div>
                   <div class="mb-3">
-                    <label class="col-form-label" for="selectPuesto"
+                    <!-- <label class="col-form-label" for="selectPuesto"
                       >Puesto:</label
                     >
-                    <!-- <select
-                      id="selectPuesto"
-                      class="form-select"
-                      aria-label="Default select example"
-                      name="puesto"
-                    >
-                      <option selected="">Puesto</option>
-                      
-                      <option value="1">One</option>
-                      <option value="2">Two</option>
-                      <option value="3">Three</option>
-                    </select> -->
+                   
                     <input
                       id="selectPuesto-edit"
                       class="form-control"
                       type="text"
                       name="puesto"
-                    />
+                    /> -->
+                     <label for="editPuestos" class="col-form-label" for="puestoSelect"
+                      >Puesto:</label
+                    > 
+                    <select class="form-select" id="editPuestos" aria-label="Default select example">
+                      <!-- <option selected="4">Open this select menu</option> -->
+                      {%for i in puestos%}
+                      <option value={{i.id}}>{{i.nombre}}</option>
+                      {%endfor%}
+                    </select>
+                                        
+                    
+                    
                   </div>
                
               </div>

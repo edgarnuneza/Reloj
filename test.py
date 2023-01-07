@@ -18,6 +18,7 @@ from types import coroutine
 from ReconocedorRostros.capturador import Capturador
 from Controllers.empleadoController import EmpleadoController
 from Controllers.movimientoController import MovimientoController
+from Controllers.puestoController import PuestoController
 from Model.model import Empleado, Movimiento
 from flask import request
 import datetime
@@ -311,8 +312,23 @@ def getEmpleado(idEmpleado):
         empleado = controlador.get(idEmpleado)
 
         return jsonify(id=empleado.id, nombre=empleado.nombre, apaterno=empleado.apellido_paterno, amaterno=empleado.apellido_materno, matricula=empleado.matricula, datosCapturados=empleado.datosCapturados, puesto=empleado.puesto, creado=empleado.creado, actualizado=empleado.actualizado)
+@app.route("/getPuesto/<nombre>")
+def getPuesto(nombre):
+    if isLogged() == False:
+        return redirect(url_for('index'))
+    else:
+        controlador = PuestoController()
+        puesto = controlador.get(nombre)
 
-
+        return jsonify(nombre=puesto.nombre)
+@app.route("/getPuestos")
+def getPuestos():
+    if isLogged() == False:
+        return redirect(url_for('index'))
+    else:
+        controladorPuestos=PuestoController()
+        
+    
 @app.route("/updateEmpleado", methods=['POST', 'GET'])
 def updateEmpleado():
     if isLogged() == False:
@@ -345,7 +361,10 @@ def empleados():
         controlador = EmpleadoController()
         datos = controlador.getAll()
         datos = datos[::-1]
-        return render_template("vision.html", data=datos)
+        controladorPuesto=PuestoController()
+        puestos=controladorPuesto.getAll()
+        puestos = puestos[::-1]
+        return render_template("vision.html", data=datos,puestos=puestos)
 
 
 @app.route('/createempleado', methods=['POST'])
