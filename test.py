@@ -12,7 +12,6 @@ from collections import Counter
 from email.mime import image
 from functools import total_ordering
 from flask import Flask, session
-
 import pickle
 from types import coroutine
 from ReconocedorRostros.capturador import Capturador
@@ -109,7 +108,6 @@ def validation(user, password):
             return True
     return False
 
-
 def isLogged():
     # name = session.get('usuario', 'not set')
     # if name != 'not set':
@@ -117,7 +115,6 @@ def isLogged():
     # else:
     #     return False
     return True
-
 
 @app.route("/do_login", methods=["POST"])
 def do_login():
@@ -133,14 +130,12 @@ def do_login():
     #     # return redirect("/login")
     #     return redirect(url_for('index'))
 
-
 @app.route("/reconocerPersona")
 def reconocerPersona():
     if isLogged() == False:
         return redirect(url_for('index'))
     else:
         return render_template("Grabando.html")
-
 
 @app.route("/movimiento")
 def movimiento():
@@ -256,7 +251,6 @@ def identificarRostro(results):
     yield (b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' +
            bytearray(encodedImage) + b'\r\n')
 
-
 @app.route('/api/count')
 def hello():
     if isLogged() == False:
@@ -269,7 +263,6 @@ def hello():
             return jsonify(isCaptured=True)
         else:
             return jsonify(isCaptured=False)
-
 
 @app.route('/api/countcaptura')
 def countCaptura():
@@ -312,6 +305,7 @@ def getEmpleado(idEmpleado):
         empleado = controlador.get(idEmpleado)
 
         return jsonify(id=empleado.id, nombre=empleado.nombre, apaterno=empleado.apellido_paterno, amaterno=empleado.apellido_materno, matricula=empleado.matricula, datosCapturados=empleado.datosCapturados, puesto=empleado.puesto, creado=empleado.creado, actualizado=empleado.actualizado)
+
 @app.route("/getPuesto/<nombre>")
 def getPuesto(nombre):
     if isLogged() == False:
@@ -321,6 +315,7 @@ def getPuesto(nombre):
         puesto = controlador.get(nombre)
 
         return jsonify(nombre=puesto.nombre)
+    
 @app.route("/getPuestos")
 def getPuestos():
     if isLogged() == False:
